@@ -8,7 +8,7 @@ file
 
 //// import
 importEx
-    : IMPORT package (AS ID)? (FOREIGN typeEx)?
+    : IMPORT package DOT (ID|opIdWrap|aopIdWrap) (AS ID)? (FOREIGN typeEx)?
     ;
 
 //// package
