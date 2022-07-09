@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace importEx* definition*
+    : namespace? importEx* definition*
     ;
 
 //// import
