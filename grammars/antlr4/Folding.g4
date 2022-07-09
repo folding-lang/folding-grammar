@@ -8,7 +8,7 @@ file
 
 //// import
 importEx
-    : IMPORT package (AS ID)? (FOREGIN typeEx)?
+    : IMPORT package (AS ID)? (FOREIGN typeEx)?
     ;
 
 //// package
@@ -49,7 +49,7 @@ aopParameterInType: LPAREN paramExInType RPAREN ;
 
 //// impl
 impl
-    : IMPL typeEx implBody
+    : IMPL typeParam* typeEx implBody
     ;
 implBody: LBRACE def* RBRACE ;
 
@@ -97,6 +97,9 @@ def
     : FOLDING? ID parameter* typeEx? ASSGIN value
     | FOLDING? opIdWrap opParameter typeEx? ASSGIN value
     | FOLDING? aopIdWrap aopParameter typeEx? ASSGIN value
+    | FOLDING? ID FOREIGN parameterInType* typeEx
+    | FOLDING? opIdWrap FOREIGN opParameterInType typeEx
+    | FOLDING? aopIdWrap FOREIGN aopParameterInType typeEx
     ;
 
 //// id utill
@@ -137,7 +140,7 @@ LINE_COMMENT
 //// Keywards
 
 AS: 'as' ;
-FOREGIN: 'foregin' ;
+FOREIGN: 'foreign' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
 IMPORT: 'import' ;
