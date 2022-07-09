@@ -164,7 +164,7 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   ~[~(){},'"`[\] a-zA-Z0-9\n\r\t]  ;
+    :   [-<>#$.~|+=*&%^@!?/\\]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
