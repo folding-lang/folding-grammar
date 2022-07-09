@@ -48,7 +48,7 @@ value
     | String | LPAREN String RPAREN
     | value argValue+ | LPAREN value argValue+ RPAREN
     | value OPID value | LPAREN value OPID value RPAREN
-    | AOPID value | LPAREN AOPID value
+    | OPID value | LPAREN OPID value
     | opIdWrap
     | aopIdWrap
     | body
@@ -70,14 +70,14 @@ argValue: LPAREN argEx* RPAREN ;
 val: VAL ID (COLON typeEx)? ASSGIN value ;
 var: VAR ID (COLON typeEx)? ASSGIN value ;
 def
-    : DEF ID parameter* (COLON typeEx)? ASSGIN value
-    | DEF opIdWrap parameter{2} (COLON typeEx)? ASSGIN value
-    | DEF aopIdWrap parameter (COLON typeEx)? ASSGIN value
+    : ID parameter* (COLON typeEx)? ASSGIN value
+    | opIdWrap parameter{2} (COLON typeEx)? ASSGIN value
+    | aopIdWrap parameter (COLON typeEx)? ASSGIN value
     ;
 
 //// id utill
 opIdWrap: LSQUARE OPID RSQUARE ;
-aopIdWrap: LSQUARE AOPID RSQUARE ;
+aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 //// typeEx
 typeEx
@@ -141,6 +141,7 @@ LANGLE: '<' ;
 RANGLE: '>' ;
 HASH: '#' ;
 AT: '@' ;
+TILDE: '~' ;
 
 //// ID
 
@@ -151,11 +152,10 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   ~[~(){},'"`[\] a-zA-Z0-9]  ;
+    :   ~[~(){},'"`[\] a-zA-Z0-9\n\r\t]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
-AOPID: '~' IDLETTERSPECIAL+ ;
 
 
 //// default data struct
