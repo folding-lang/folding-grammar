@@ -82,7 +82,6 @@ aopParameter: LPAREN paramEx RPAREN ;
 argEx: (ID ASSGIN)? value ;
 argValue
     : LPAREN argEx* RPAREN
-    | argEx
     ;
 
 //// definition
