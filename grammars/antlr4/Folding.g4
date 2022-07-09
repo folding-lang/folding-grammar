@@ -29,10 +29,10 @@ compo
 
 //// type
 typeParam
-    : LPAREN ID ( typeEx+)? RPAREN
+    : LPAREN ID typeEx* RPAREN
     ;
 type
-    : TYPE ID typeParam* TILDE ( typeEx+)? typeDefBody
+    : TYPE ID typeParam* (TILDE typeEx+)? typeDefBody
     ;
 typeDefBody
     : LBRACE defInType* RBRACE
@@ -81,7 +81,7 @@ paramEx
     : ID  typeEx ELLIPSIS? (ASSGIN value)?
     ;
 parameter: LPAREN paramEx* RPAREN ;
-opParameter: LPAREN paramEx{2} RPAREN ;
+opParameter: LPAREN paramEx paramEx RPAREN ;
 aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
