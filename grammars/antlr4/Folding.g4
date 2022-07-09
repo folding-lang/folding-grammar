@@ -108,6 +108,7 @@ typeEx
     : LPAREN typeEx ARROW typeEx RPAREN
     | typeEx ARROW typeEx
     | typeExSingle
+    | WILDCARD
     ;
 typeExSingle
     : ID typeExUnit*
