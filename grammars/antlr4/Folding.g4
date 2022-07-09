@@ -28,9 +28,24 @@ compo
     ;
 
 //// type
-type
-    : TYPE ID (COLON typeEx (COMMA typeEx)*)? definingBody
+typeParam
+    : LPAREN ID ( typeEx+)? RPAREN
     ;
+type
+    : TYPE ID typeParam* TILDE ( typeEx+)? typeDefBody
+    ;
+typeDefBody
+    : LBRACE defInType* RBRACE
+    ;
+defInType
+    : ID parameterInType* typeEx
+    | opIdWrap opParameterInType typeEx
+    | aopIdWrap aopParameterInType typeEx
+    ;
+paramExInType: typeEx ELLIPSIS? ;
+parameterInType: LPAREN paramExInType* RPAREN ;
+opParameterInType: LPAREN paramExInType paramExInType RPAREN ;
+aopParameterInType: LPAREN paramExInType RPAREN ;
 
 //// define collect
 definition
@@ -52,27 +67,31 @@ value
     | opIdWrap
     | aopIdWrap
     | body
+    | WILDCARD
     ;
 
 //// parameter
 paramEx
-    : ID COLON typeEx ELLIPSIS? (ASSGIN value)?
+    : ID  typeEx ELLIPSIS? (ASSGIN value)?
     ;
-parameter
-    : LPAREN ((paramEx COMMA)* paramEx)? RPAREN
-    ;
+parameter: LPAREN paramEx* RPAREN ;
+opParameter: LPAREN paramEx{2} RPAREN ;
+aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
 argEx: (ID ASSGIN)? value ;
-argValue: LPAREN argEx* RPAREN ;
+argValue
+    : LPAREN argEx* RPAREN
+    | argEx
+    ;
 
 //// definition
-val: VAL ID (COLON typeEx)? ASSGIN value ;
-var: VAR ID (COLON typeEx)? ASSGIN value ;
+val: VAL ID typeEx? ASSGIN value ;
+var: VAR ID typeEx? ASSGIN value ;
 def
-    : ID parameter* (COLON typeEx)? ASSGIN value
-    | opIdWrap parameter{2} (COLON typeEx)? ASSGIN value
-    | aopIdWrap parameter (COLON typeEx)? ASSGIN value
+    : ID parameter* typeEx? ASSGIN value
+    | opIdWrap opParameter typeEx? ASSGIN value
+    | aopIdWrap aopParameter typeEx? ASSGIN value
     ;
 
 //// id utill
@@ -112,7 +131,6 @@ LINE_COMMENT
 //// Keywards
 
 AS: 'as' ;
-DEF: 'def' ;
 FOREGIN: 'foregin' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
@@ -126,10 +144,8 @@ VAL: 'val' ;
 //// Signs
 
 ASSGIN: '=' ;
-COLON: ':' ;
 ELLIPSIS: '...' ;
 DOT: '.' ;
-COMMA: ',' ;
 LPAREN: '(' ;
 RPAREN: ')' ;
 LSQUARE: '[' ;
@@ -137,11 +153,8 @@ RSQUARE: ']' ;
 LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
-LANGLE: '<' ;
-RANGLE: '>' ;
-HASH: '#' ;
-AT: '@' ;
 TILDE: '~' ;
+WILDCARD: '_' ;
 
 //// ID
 
