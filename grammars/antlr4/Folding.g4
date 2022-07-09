@@ -47,9 +47,15 @@ parameterInType: LPAREN paramExInType* RPAREN ;
 opParameterInType: LPAREN paramExInType paramExInType RPAREN ;
 aopParameterInType: LPAREN paramExInType RPAREN ;
 
+//// impl
+impl
+    : IMPL typeEx implBody
+    ;
+implBody: LBRACE def* RBRACE ;
+
 //// define collect
 definition
-    : def | val | var | type
+    : def | val | var | type | impl
     ;
 definingBody
     : LBRACE definition* RBRACE
@@ -134,6 +140,7 @@ FOREGIN: 'foregin' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
 IMPORT: 'import' ;
+IMPL: 'impl' ;
 RETURN: 'return' ;
 TYPE: 'type' ;
 VAR: 'var' ;
