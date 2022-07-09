@@ -21,7 +21,7 @@ namespace
 
 //// body
 body
-    : LBRACE compo* RBRACE
+    : UNWRAP? LBRACE compo* RBRACE
     ;
 compo
     : definition|value
@@ -88,9 +88,9 @@ argValue
 val: VAL ID typeEx? ASSGIN value ;
 var: VAR ID typeEx? ASSGIN value ;
 def
-    : ID parameter* typeEx? ASSGIN value
-    | opIdWrap opParameter typeEx? ASSGIN value
-    | aopIdWrap aopParameter typeEx? ASSGIN value
+    : FOLDING? ID parameter* typeEx? ASSGIN value
+    | FOLDING? opIdWrap opParameter typeEx? ASSGIN value
+    | FOLDING? aopIdWrap aopParameter typeEx? ASSGIN value
     ;
 
 //// id utill
@@ -138,6 +138,7 @@ RETURN: 'return' ;
 TYPE: 'type' ;
 VAR: 'var' ;
 VAL: 'val' ;
+UNWRAP: 'unwrap' ;
 
 
 //// Signs
