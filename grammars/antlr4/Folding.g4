@@ -65,7 +65,21 @@ aopParameterInType: LPAREN paramExInType RPAREN ;
 impl
     : IMPL typeParam* typeEx implBody
     ;
-implBody: LBRACE def* RBRACE ;
+implBody: LBRACE defInImpl* RBRACE ;
+
+paramExInImpl: ID (ASSGIN value)? ;
+parameterInImpl: LPAREN paramExInImpl* RPAREN ;
+opParameterInImpl: LPAREN paramExInImpl paramExInImpl RPAREN ;
+aopParameterInImpl: LPAREN paramExInImpl RPAREN ;
+
+defInImpl
+    : FOLDING? ID parameterInImpl* ASSGIN value
+    | FOLDING? opIdWrap opParameterInImpl ASSGIN value
+    | FOLDING? aopIdWrap aopParameterInImpl ASSGIN value
+    | FOLDING? ID FOREIGN
+    | FOLDING? opIdWrap FOREIGN
+    | FOLDING? aopIdWrap FOREIGN
+    ;
 
 //// define collect
 definition
