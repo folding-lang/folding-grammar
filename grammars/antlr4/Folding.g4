@@ -26,6 +26,7 @@ body
 compo
     : definition|value
     ;
+
 //// data
 data
     : DATA ID typeParam* (TILDE typeEx+)? dataBody
