@@ -26,7 +26,6 @@ body
 compo
     : definition|value
     ;
-
 //// data
 data
     : DATA ID typeParam* (TILDE typeEx+)? dataBody
@@ -35,7 +34,7 @@ dataBody
     : LBRACE constuctor* definitionInData* RBRACE
     ;
 definitionInData
-    : INTERNAL? (STATIC (val|var|def|data)|OVERRIDE? (val|var|def))
+    : INTERNAL? OVERRIDE? (val|var|def|impl)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
@@ -158,7 +157,6 @@ FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
 OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
-STATIC: 'static' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
