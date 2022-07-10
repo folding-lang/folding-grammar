@@ -8,7 +8,13 @@ file
 
 //// import
 importEx
-    : IMPORT package (DOT ID (AS ID)?|opIdWrap | ELLIPSIS) (FOREIGN FOLDING? typeEx)?
+    : IMPORT package importBody?
+    ;
+importBody
+    : LBRACE importElement* RBRACE
+    ;
+importElement
+    : (ID|opIdWrap|aopIdWrap) (FOREIGN FOLDING? typeEx)?
     ;
 
 //// package
@@ -202,7 +208,7 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   [-<>#$.~|+=*&%^@!?/\\]  ;
+    :   [-<>#$.~|+=*&%^@!?/\\:;]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
