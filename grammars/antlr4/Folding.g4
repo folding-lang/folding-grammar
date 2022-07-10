@@ -8,7 +8,7 @@ file
 
 //// import
 importEx
-    : IMPORT package DOT (ID|opIdWrap|aopIdWrap) (AS ID)? (FOREIGN typeEx)?
+    : IMPORT package DOT (ID|opIdWrap|aopIdWrap) (AS ID)? (FOREIGN FOLDING? typeEx)?
     ;
 
 //// package
@@ -21,7 +21,7 @@ namespace
 
 //// body
 body
-    : UNWRAP? LBRACE compo* RBRACE
+    : DO? LBRACE compo* RBRACE
     ;
 compo
     : definition|value
@@ -29,7 +29,16 @@ compo
 
 //// data
 data
-    : DATA ID typeParam* defInType+ definingBody
+    : DATA ID typeParam* (TILDE typeEx+)? dataBody
+    ;
+dataBody
+    : LBRACE constuctor* definitionInData* RBRACE
+    ;
+definitionInData
+    : INTERNAL? (STATIC (val|var|def|data)|OVERRIDE? (val|var|def))
+    ;
+constuctor
+    : parameter+ (ASSGIN value)?
     ;
 
 //// type
@@ -62,9 +71,6 @@ implBody: LBRACE def* RBRACE ;
 definition
     : def | val | var | type | impl | data
     ;
-definingBody
-    : LBRACE definition* RBRACE
-    ;
 
 //// value
 value
@@ -72,9 +78,10 @@ value
     | Integer | LPAREN Integer RPAREN
     | Double | LPAREN Double RPAREN
     | String | LPAREN String RPAREN
-    | value argValue+ | LPAREN value argValue+ RPAREN
+    | value argValue | LPAREN value argValue RPAREN
     | value OPID value | LPAREN value OPID value RPAREN
     | OPID value | LPAREN OPID value
+    | value DOT value
     | opIdWrap
     | aopIdWrap
     | body
@@ -149,13 +156,16 @@ DATA: 'data' ;
 FOREIGN: 'foreign' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
+OVERRIDE: 'override' ;
+INTERNAL: 'internal' ;
+STATIC: 'static' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
 TYPE: 'type' ;
 VAR: 'var' ;
 VAL: 'val' ;
-UNWRAP: 'unwrap' ;
+DO: 'do' ;
 
 
 //// Signs
