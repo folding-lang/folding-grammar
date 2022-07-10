@@ -8,7 +8,7 @@ file
 
 //// import
 importEx
-    : IMPORT package DOT (ID|opIdWrap|aopIdWrap) (AS ID)? (FOREIGN FOLDING? typeEx)?
+    : IMPORT package (DOT ID (AS ID)?|opIdWrap | ELLIPSIS) (FOREIGN FOLDING? typeEx)?
     ;
 
 //// package
