@@ -99,7 +99,6 @@ value
     | opIdWrap
     | aopIdWrap
     | body
-    | WILDCARD
     ;
 
 //// parameter
@@ -137,7 +136,6 @@ typeEx
     : LPAREN typeEx ARROW typeEx RPAREN
     | typeEx ARROW typeEx
     | typeExSingle
-    | WILDCARD
     ;
 typeExSingle
     : ID typeExUnit*
@@ -194,7 +192,6 @@ LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
 TILDE: '~' ;
-WILDCARD: '_' ;
 
 //// ID
 
