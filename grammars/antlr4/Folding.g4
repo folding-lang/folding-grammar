@@ -27,6 +27,11 @@ compo
     : definition|value
     ;
 
+//// data
+data
+    : DATA ID typeParam* defInType+ definingBody
+    ;
+
 //// type
 typeParam
     : LPAREN ID typeEx* RPAREN
@@ -55,7 +60,7 @@ implBody: LBRACE def* RBRACE ;
 
 //// define collect
 definition
-    : def | val | var | type | impl
+    : def | val | var | type | impl | data
     ;
 definingBody
     : LBRACE definition* RBRACE
@@ -85,7 +90,7 @@ opParameter: LPAREN paramEx paramEx RPAREN ;
 aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
-argEx: (ID ASSGIN)? value ;
+argEx: (ID ASSGIN)? value (TILDE typeEx)? ;
 argValue
     : LPAREN argEx* RPAREN
     ;
@@ -140,6 +145,7 @@ LINE_COMMENT
 //// Keywards
 
 AS: 'as' ;
+DATA: 'data' ;
 FOREIGN: 'foreign' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
