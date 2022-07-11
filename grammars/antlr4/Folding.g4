@@ -38,10 +38,13 @@ data
     : DATA ID typeParam* (TILDE typeEx+)? dataBody
     ;
 dataBody
-    : LBRACE constuctor* definitionInData* RBRACE
+    : LBRACE constuctor* (definitionInData|staticDefinition)* RBRACE
     ;
 definitionInData
     : INTERNAL? OVERRIDE? (val|var|def|impl)
+    ;
+staticDefinition
+    : STATIC (val|var|def|data)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
@@ -183,6 +186,7 @@ TYPE: 'type' ;
 VAR: 'var' ;
 VAL: 'val' ;
 DO: 'do' ;
+STATIC: 'static' ;
 
 
 //// Signs
