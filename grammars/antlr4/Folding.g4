@@ -153,10 +153,7 @@ typeEx
     | typeExSingle
     ;
 typeExSingle
-    : ID typeExUnit*
-    ;
-typeExUnit
-    : LPAREN typeEx RPAREN
+    : ID (LPAREN typeEx+ RPAREN)?
     ;
 
 
