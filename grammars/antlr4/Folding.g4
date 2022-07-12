@@ -38,7 +38,7 @@ definitionInBody
 
 //// data
 data
-    : DATA ID typeParam* (TILDE typeEx+)? dataBody
+    : DATA ID typeParam? (TILDE typeEx+)? dataBody
     ;
 dataBody
     : LBRACE constuctor* (definitionInData|staticDefinition)* RBRACE
@@ -55,18 +55,21 @@ constuctor
 
 //// type
 typeParam
-    : LPAREN ID typeEx* RPAREN
+    : LSQUARE (ID (TILDE typeEx+)?)+ RSQUARE
+    ;
+typeParamOnType
+    : LPAREN ID+ RPAREN
     ;
 type
-    : TYPE ID typeParam* (TILDE typeEx+)? typeDefBody
+    : TYPE ID typeParamOnType (TILDE typeEx+)? typeDefBody
     ;
 typeDefBody
     : LBRACE defInType* RBRACE
     ;
 defInType
-    : ID parameterInType* typeEx
-    | opIdWrap opParameterInType typeEx
-    | aopIdWrap aopParameterInType typeEx
+    : ID typeParam? parameterInType* typeEx
+    | opIdWrap typeParam? opParameterInType typeEx
+    | aopIdWrap typeParam? aopParameterInType typeEx
     ;
 paramExInType: typeEx ELLIPSIS? ;
 parameterInType: LPAREN paramExInType* RPAREN ;
@@ -131,12 +134,12 @@ argValue
 val: VAL ID typeEx? ASSGIN value ;
 var: VAR ID typeEx? ASSGIN value ;
 def
-    : FOLDING? ID parameter* typeEx? ASSGIN value
-    | FOLDING? opIdWrap opParameter typeEx? ASSGIN value
-    | FOLDING? aopIdWrap aopParameter typeEx? ASSGIN value
-    | FOLDING? ID FOREIGN parameterInType* typeEx
-    | FOLDING? opIdWrap FOREIGN opParameterInType typeEx
-    | FOLDING? aopIdWrap FOREIGN aopParameterInType typeEx
+    : FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
+    | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | FOLDING? aopIdWrap typeParam aopParameter typeEx? ASSGIN value
+    | FOLDING? ID typeParam? FOREIGN parameterInType* typeEx
+    | FOLDING? opIdWrap typeParam? FOREIGN opParameterInType typeEx
+    | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInType typeEx
     ;
 
 //// id utill
