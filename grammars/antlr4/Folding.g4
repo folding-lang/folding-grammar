@@ -53,6 +53,19 @@ constuctor
     : parameter+ (ASSGIN value)?
     ;
 
+//// interface
+interface
+    : INTERFACE typeParamOnType? (TILDE typeEx+)? interfaceBody
+    ;
+interfaceBody
+    : LBRACE (def|propertyInInterface)* RBRACE
+    ;
+propertyInInterface
+    : valInInterface | varInInterface
+    ;
+valInInterface: VAL ID typeEx ;
+varInInterface: VAR ID typeEx ;
+
 //// type
 typeParam
     : LSQUARE (ID (TILDE typeEx+)?)+ RSQUARE
@@ -98,7 +111,7 @@ defInImpl
 
 //// define collect
 definition
-    : def | val | var | type | impl | data
+    : def | val | var | type | impl | data | interface
     ;
 
 //// value
@@ -190,6 +203,7 @@ VAR: 'var' ;
 VAL: 'val' ;
 DO: 'do' ;
 STATIC: 'static' ;
+INTERFACE: 'interface' ;
 
 
 //// Signs
