@@ -14,7 +14,7 @@ importBody
     : LBRACE importElement* RBRACE
     ;
 importElement
-    : (ID|opIdWrap|aopIdWrap) (FOREIGN FOLDING? typeEx)?
+    : (package_ DOT)? (ID|opIdWrap|aopIdWrap) (FOREIGN FOLDING? typeEx)?
     ;
 
 //// package
@@ -55,16 +55,22 @@ constuctor
 
 //// interface
 interface_
-    : INTERFACE typeParamOnType? (TILDE typeEx+)? interfaceBody
+    : INTERFACE ID typeParam? (TILDE typeEx+)? interfaceBody
     ;
 interfaceBody
-    : LBRACE (def|propertyInInterface)* RBRACE
+    : LBRACE (defInInterface|propertyInInterface|staticDefinition)* RBRACE
     ;
 propertyInInterface
     : valInInterface | varInInterface
     ;
 valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
+
+defInInterface
+    : FOLDING? ID typeParam? parameter* typeEx? (ASSGIN value)?
+    | FOLDING? opIdWrap typeParam? opParameter typeEx? (ASSGIN value)?
+    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? (ASSGIN value)?
+    ;
 
 //// type
 typeParam
