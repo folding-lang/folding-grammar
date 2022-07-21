@@ -18,7 +18,7 @@ importElement
     ;
 
 //// package
-package
+package_
     : ID (DOT ID)*
     ;
 namespace
@@ -54,7 +54,7 @@ constuctor
     ;
 
 //// interface
-interface
+interface_
     : INTERFACE typeParamOnType? (TILDE typeEx+)? interfaceBody
     ;
 interfaceBody
@@ -111,7 +111,7 @@ defInImpl
 
 //// define collect
 definition
-    : def | val | var | type | impl | data | interface
+    : def | val_ | var_ | type | impl | data | interface_
     ;
 
 //// value
@@ -144,8 +144,8 @@ argValue
     ;
 
 //// definition
-val: VAL ID typeEx? ASSGIN value ;
-var: VAR ID typeEx? ASSGIN value ;
+val_: VAL ID typeEx? ASSGIN value ;
+var_: VAR ID typeEx? ASSGIN value ;
 def
     : FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
     | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
