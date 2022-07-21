@@ -67,9 +67,12 @@ valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : FOLDING? ID typeParam? parameter* typeEx? (ASSGIN value)?
-    | FOLDING? opIdWrap typeParam? opParameter typeEx? (ASSGIN value)?
-    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? (ASSGIN value)?
+    : FOLDING? ID typeParam? parameter* typeEx
+    | FOLDING? opIdWrap typeParam? opParameter typeEx
+    | FOLDING? aopIdWrap typeParam? aopParameter typeEx
+    | FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
+    | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
     ;
 
 //// type
