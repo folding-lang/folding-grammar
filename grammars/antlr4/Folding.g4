@@ -71,7 +71,7 @@ typeParam
     : (LSQUARE typeParamCompo RSQUARE)+
     ;
 typeParamCompo: ID (TILDE (typeEx|typeParamTypeClassBound)+)? ;
-typeParamTypeClassBound: RSQUARE typeEx LSQUARE ;
+typeParamTypeClassBound: LSQUARE typeEx RSQUARE ;
 typeParamOnType
     : LPAREN ID+ RPAREN
     ;
@@ -118,7 +118,7 @@ definition
 
 //// value
 value
-    : ID typeCasting?
+    : (package_ DOT)? ID typeCasting?
     | Integer | LPAREN Integer RPAREN typeCasting?
     | Double | LPAREN Double RPAREN typeCasting?
     | String | LPAREN String RPAREN typeCasting?
@@ -126,8 +126,8 @@ value
     | value OPID value | LPAREN value OPID value RPAREN typeCasting?
     | OPID value | LPAREN OPID value typeCasting?
     | value DOT value typeCasting?
-    | opIdWrap typeCasting?
-    | aopIdWrap typeCasting?
+    | (package_ DOT)? opIdWrap typeCasting?
+    | (package_ DOT)? aopIdWrap typeCasting?
     | body typeCasting?
     ;
 
@@ -170,7 +170,7 @@ typeEx
     | typeExSingle
     ;
 typeExSingle
-    : ID (LPAREN typeEx+ RPAREN)?
+    : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
     ;
 
 
