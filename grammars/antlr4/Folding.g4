@@ -116,18 +116,20 @@ definition
 
 //// value
 value
-    : ID
-    | Integer | LPAREN Integer RPAREN
-    | Double | LPAREN Double RPAREN
-    | String | LPAREN String RPAREN
-    | value argValue | LPAREN value argValue RPAREN
-    | value OPID value | LPAREN value OPID value RPAREN
-    | OPID value | LPAREN OPID value
-    | value DOT value
-    | opIdWrap
-    | aopIdWrap
-    | body
+    : ID typeCasting?
+    | Integer | LPAREN Integer RPAREN typeCasting?
+    | Double | LPAREN Double RPAREN typeCasting?
+    | String | LPAREN String RPAREN typeCasting?
+    | value argValue | LPAREN value argValue RPAREN typeCasting?
+    | value OPID value | LPAREN value OPID value RPAREN typeCasting?
+    | OPID value | LPAREN OPID value typeCasting?
+    | value DOT value typeCasting?
+    | opIdWrap typeCasting?
+    | aopIdWrap typeCasting?
+    | body typeCasting?
     ;
+
+typeCasting: AS typeEx ;
 
 //// parameter
 paramEx
