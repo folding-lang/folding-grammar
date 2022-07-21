@@ -8,7 +8,7 @@ file
 
 //// import
 importEx
-    : IMPORT package importBody?
+    : IMPORT package_ importBody?
     ;
 importBody
     : LBRACE importElement* RBRACE
@@ -22,7 +22,7 @@ package_
     : ID (DOT ID)*
     ;
 namespace
-    : NAMESPACE package
+    : NAMESPACE package_
     ;
 
 //// body
@@ -33,7 +33,7 @@ compo
     : definitionInBody|value
     ;
 definitionInBody
-    : def | var | val | impl | data
+    : def | var_ | val_ | impl | data
     ;
 
 //// data
@@ -44,10 +44,10 @@ dataBody
     : LBRACE constuctor* (definitionInData|staticDefinition)* RBRACE
     ;
 definitionInData
-    : INTERNAL? OVERRIDE? (val|var|def|impl)
+    : INTERNAL? OVERRIDE? (val_|var_|def|impl)
     ;
 staticDefinition
-    : STATIC (val|var|def|data)
+    : STATIC (val_|var_|def|data)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
