@@ -33,7 +33,7 @@ compo
     : definitionInBody|value
     ;
 definitionInBody
-    : def | var_ | val_ | impl | data
+    : def | var_ | val_ | impl | data | interface_
     ;
 
 //// data
@@ -47,7 +47,7 @@ definitionInData
     : INTERNAL? OVERRIDE? (val_|var_|def|impl)
     ;
 staticDefinition
-    : STATIC (val_|var_|def|data)
+    : STATIC (val_|var_|def|impl|data|interface_)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
