@@ -47,7 +47,7 @@ definitionInData
     : INTERNAL? OVERRIDE? (val_|var_|def|impl)
     ;
 staticDefinition
-    : STATIC (val_|var_|def|impl|data|interface_)
+    : STATIC (val_|var_|def|data|interface_)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
