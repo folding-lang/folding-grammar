@@ -153,7 +153,7 @@ var_: VAR ID typeEx? ASSGIN value ;
 def
     : FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
     | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | FOLDING? aopIdWrap typeParam aopParameter typeEx? ASSGIN value
+    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
     | FOLDING? ID typeParam? FOREIGN parameterInType* typeEx
     | FOLDING? opIdWrap typeParam? FOREIGN opParameterInType typeEx
     | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInType typeEx
