@@ -138,6 +138,7 @@ value
     | (package_ DOT)? opIdWrap typeCasting?
     | (package_ DOT)? aopIdWrap typeCasting?
     | body typeCasting?
+    | lambda typeCasting?
     ;
 
 typeCasting: AS typeEx ;
@@ -166,6 +167,14 @@ def
     | FOLDING? ID typeParam? FOREIGN parameterInType* typeEx
     | FOLDING? opIdWrap typeParam? FOREIGN opParameterInType typeEx
     | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInType typeEx
+    ;
+
+//// lambda
+lambdaParamEx
+    : ID  (TILDE typeEx ELLIPSIS?)? (ASSGIN value)?
+    ;
+lambda
+    : LSQUARE lambdaParamEx* RSQUARE value
     ;
 
 //// id utill
