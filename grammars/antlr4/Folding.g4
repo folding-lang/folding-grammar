@@ -77,10 +77,9 @@ defInInterface
 
 //// type
 typeParam
-    : (LSQUARE typeParamCompo RSQUARE)+
+    : LSQUARE typeParamCompo+ RSQUARE
     ;
-typeParamCompo: ID (TILDE (typeEx|typeParamTypeClassBound)+)? ;
-typeParamTypeClassBound: LSQUARE typeEx RSQUARE ;
+typeParamCompo: ID (TILDE typeEx)* ;
 typeParamOnType
     : LPAREN ID+ RPAREN
     ;
