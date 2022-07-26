@@ -38,7 +38,7 @@ definitionInBody
 
 //// data
 data
-    : DATA ID typeParam? (TILDE typeEx+)? dataBody
+    : ABSTRACT? DATA ID typeParam? (TILDE typeEx+)? dataBody
     ;
 dataBody
     : LBRACE constuctor* (definitionInData|staticDefinition)* RBRACE
@@ -210,6 +210,7 @@ LINE_COMMENT
 //// Keywards
 
 AS: 'as' ;
+ABSTRACT: 'abstract' ;
 DATA: 'data' ;
 FOREIGN: 'foreign' ;
 FOLDING: 'folding' ;
