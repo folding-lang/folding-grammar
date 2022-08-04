@@ -33,24 +33,24 @@ compo
     : definitionInBody|value
     ;
 definitionInBody
-    : def | var_ | val_ | impl | data | interface_
+    : def | var_ | val_ | impl | class_ | interface_
     ;
 
 //// data
-data
-    : ABSTRACT? DATA ID typeParam? (TILDE typeEx+)? dataBody
+class_
+    : ABSTRACT? DATA ID typeParam? (TILDE typeEx+)? classBody
     ;
-dataBody
-    : LBRACE constuctor* (definitionInData|staticDefinition|abstractDefinitionInData)* RBRACE
+classBody
+    : LBRACE constuctor* (definitionInClass|staticDefinition|abstractDefinitionInClass)* RBRACE
     ;
-definitionInData
+definitionInClass
     : INTERNAL? OVERRIDE? (val_|var_|def|impl)
     ;
-abstractDefinitionInData
+abstractDefinitionInClass
     : INTERNAL? (propertyInInterface|defInInterface)
     ;
 staticDefinition
-    : STATIC (val_|var_|def|data|interface_)
+    : STATIC (val_|var_|def|class_|interface_)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
@@ -83,24 +83,24 @@ typeParam
     : LSQUARE typeParamCompo+ RSQUARE
     ;
 typeParamCompo: ID (TILDE typeEx)* ;
-typeParamOnType
+typeParamOnTypeclass
     : LPAREN ID+ RPAREN
     ;
 type
-    : TYPE ID typeParamOnType (TILDE typeEx+)? typeDefBody
+    : TYPE ID typeParamOnTypeclass (TILDE typeEx+)? typeclassDefBody
     ;
-typeDefBody
-    : LBRACE defInType* RBRACE
+typeclassDefBody
+    : LBRACE defInTypeclass* RBRACE
     ;
-defInType
-    : ID typeParam? parameterInType* typeEx
-    | opIdWrap typeParam? opParameterInType typeEx
-    | aopIdWrap typeParam? aopParameterInType typeEx
+defInTypeclass
+    : ID typeParam? parameterInTypeclass* typeEx
+    | opIdWrap typeParam? opParameterInTypeclass typeEx
+    | aopIdWrap typeParam? aopParameterInTypeclass typeEx
     ;
-paramExInType: typeEx ELLIPSIS? ;
-parameterInType: LPAREN paramExInType* RPAREN ;
-opParameterInType: LPAREN paramExInType paramExInType RPAREN ;
-aopParameterInType: LPAREN paramExInType RPAREN ;
+paramExInTypeclass: typeEx ELLIPSIS? ;
+parameterInTypeclass: LPAREN paramExInTypeclass* RPAREN ;
+opParameterInTypeclass: LPAREN paramExInTypeclass paramExInTypeclass RPAREN ;
+aopParameterInTypeclass: LPAREN paramExInTypeclass RPAREN ;
 
 //// impl
 impl
@@ -124,7 +124,7 @@ defInImpl
 
 //// define collect
 definition
-    : def | val_ | var_ | type | impl | data | interface_
+    : def | val_ | var_ | type | impl | class_ | interface_
     ;
 
 //// value
@@ -166,9 +166,9 @@ def
     : FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
     | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
     | FOLDING? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | FOLDING? ID typeParam? FOREIGN parameterInType* typeEx
-    | FOLDING? opIdWrap typeParam? FOREIGN opParameterInType typeEx
-    | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInType typeEx
+    | FOLDING? ID typeParam? FOREIGN parameterInTypeclass* typeEx
+    | FOLDING? opIdWrap typeParam? FOREIGN opParameterInTypeclass typeEx
+    | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInTypeclass typeEx
     ;
 
 //// lambda
@@ -214,7 +214,7 @@ LINE_COMMENT
 
 AS: 'as' ;
 ABSTRACT: 'abstract' ;
-DATA: 'data' ;
+DATA: 'class' ;
 FOREIGN: 'foreign' ;
 FOLDING: 'folding' ;
 NAMESPACE: 'namespace' ;
@@ -223,7 +223,7 @@ INTERNAL: 'internal' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
-TYPE: 'type' ;
+TYPE: 'typeclass' ;
 VAR: 'var' ;
 VAL: 'val' ;
 DO: 'do' ;
