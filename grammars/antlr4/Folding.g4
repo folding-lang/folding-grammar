@@ -41,10 +41,13 @@ data
     : ABSTRACT? DATA ID typeParam? (TILDE typeEx+)? dataBody
     ;
 dataBody
-    : LBRACE constuctor* (definitionInData|staticDefinition)* RBRACE
+    : LBRACE constuctor* (definitionInData|staticDefinition|abstractDefinitionInData)* RBRACE
     ;
 definitionInData
     : INTERNAL? OVERRIDE? (val_|var_|def|impl)
+    ;
+abstractDefinitionInData
+    : INTERNAL? (propertyInInterface|defInInterface)
     ;
 staticDefinition
     : STATIC (val_|var_|def|data|interface_)
