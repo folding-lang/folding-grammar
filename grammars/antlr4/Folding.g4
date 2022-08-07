@@ -190,6 +190,8 @@ aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 typeEx
     : LPAREN typeEx ARROW typeEx RPAREN
     | typeEx ARROW typeEx
+    | LPAREN typeExSingle ARROW typeEx RPAREN
+    | typeExSingle ARROW typeEx
     | typeExSingle
     ;
 typeExSingle
