@@ -27,7 +27,7 @@ namespace
 
 //// body
 body
-    : DO? LBRACE compo* RBRACE
+    : LBRACE compo* RBRACE
     ;
 compo
     : definitionInBody|value|returning
@@ -229,7 +229,6 @@ RETURN: 'return' ;
 TYPE: 'typeclass' ;
 VAR: 'var' ;
 VAL: 'val' ;
-DO: 'do' ;
 STATIC: 'static' ;
 INTERFACE: 'interface' ;
 
