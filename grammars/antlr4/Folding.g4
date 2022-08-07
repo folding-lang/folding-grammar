@@ -30,10 +30,13 @@ body
     : DO? LBRACE compo* RBRACE
     ;
 compo
-    : definitionInBody|value
+    : definitionInBody|value|returning
     ;
 definitionInBody
     : def | var_ | val_ | impl | class_ | interface_
+    ;
+returning
+    : RETURN value
     ;
 
 //// data
