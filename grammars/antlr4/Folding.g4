@@ -89,8 +89,8 @@ typeParamCompo: ID (TILDE typeEx)* ;
 typeParamOnTypeclass
     : LPAREN ID+ RPAREN
     ;
-type
-    : TYPE ID typeParamOnTypeclass (TILDE typeEx+)? typeclassDefBody
+typeclass
+    : TYPECLASS ID typeParamOnTypeclass (TILDE typeEx+)? typeclassDefBody
     ;
 typeclassDefBody
     : LBRACE defInTypeclass* RBRACE
@@ -127,7 +127,7 @@ defInImpl
 
 //// define collect
 definition
-    : def | val_ | var_ | type | impl | class_ | interface_
+    : def | val_ | var_ | typeclass | impl | class_ | interface_
     ;
 
 //// value
@@ -228,7 +228,7 @@ INTERNAL: 'internal' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
-TYPE: 'typeclass' ;
+TYPECLASS: 'typeclass' ;
 VAR: 'var' ;
 VAL: 'val' ;
 STATIC: 'static' ;
