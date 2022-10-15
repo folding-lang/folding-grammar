@@ -28,7 +28,7 @@ namespace
 
 //// body
 body
-    : DO LBRACE compo* RBRACE
+    : IMMEDIATELY? DO LBRACE compo* RBRACE
     ;
 compo
     : definitionInBody|value|returning
@@ -236,6 +236,7 @@ VAR: 'var' ;
 VAL: 'val' ;
 STATIC: 'static' ;
 INTERFACE: 'interface' ;
+IMMEDIATELY: 'immediately' ;
 
 
 //// Signs
