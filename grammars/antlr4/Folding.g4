@@ -8,13 +8,14 @@ file
 
 //// import
 importEx
-    : IMPORT package_ importBody?
+    : importVanila
     ;
+importVanila: IMPORT package_ importBody? ;
 importBody
     : LBRACE importElement* RBRACE
     ;
 importElement
-    : (package_ DOT)? (ID|opIdWrap|aopIdWrap) (FOREIGN FOLDING? typeEx)?
+    : (package_ DOT)? (ID|opIdWrap|aopIdWrap)
     ;
 
 //// package
@@ -73,12 +74,12 @@ valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : FOLDING? ID typeParam? parameter* typeEx
-    | FOLDING? opIdWrap typeParam? opParameter typeEx
-    | FOLDING? aopIdWrap typeParam? aopParameter typeEx
-    | FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
-    | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
+    : ID typeParam? parameter* typeEx
+    | opIdWrap typeParam? opParameter typeEx
+    | aopIdWrap typeParam? aopParameter typeEx
+    | ID typeParam? parameter* typeEx? ASSGIN value
+    | opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
     ;
 
 //// type
@@ -117,12 +118,12 @@ opParameterInImpl: LPAREN paramExInImpl paramExInImpl RPAREN ;
 aopParameterInImpl: LPAREN paramExInImpl RPAREN ;
 
 defInImpl
-    : FOLDING? ID parameterInImpl* ASSGIN value
-    | FOLDING? opIdWrap opParameterInImpl ASSGIN value
-    | FOLDING? aopIdWrap aopParameterInImpl ASSGIN value
-    | FOLDING? ID FOREIGN
-    | FOLDING? opIdWrap FOREIGN
-    | FOLDING? aopIdWrap FOREIGN
+    : ID parameterInImpl* ASSGIN value
+    | opIdWrap opParameterInImpl ASSGIN value
+    | aopIdWrap aopParameterInImpl ASSGIN value
+    | ID foreignAutoTyped
+    | opIdWrap foreignAutoTyped
+    | aopIdWrap foreignAutoTyped
     ;
 
 //// define collect
@@ -166,12 +167,12 @@ argValue
 val_: VAL ID typeEx? ASSGIN value ;
 var_: VAR ID typeEx? ASSGIN value ;
 def
-    : FOLDING? ID typeParam? parameter* typeEx? ASSGIN value
-    | FOLDING? opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | FOLDING? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | FOLDING? ID typeParam? FOREIGN parameterInTypeclass* typeEx
-    | FOLDING? opIdWrap typeParam? FOREIGN opParameterInTypeclass typeEx
-    | FOLDING? aopIdWrap typeParam? FOREIGN aopParameterInTypeclass typeEx
+    : ID typeParam? parameter* typeEx? ASSGIN value
+    | opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
+    | ID typeParam? parameterInTypeclass* foreign
+    | opIdWrap typeParam? opParameterInTypeclass foreign
+    | aopIdWrap typeParam? aopParameterInTypeclass foreign
     ;
 
 //// lambda
@@ -198,6 +199,21 @@ typeExSingle
     : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
     ;
 
+//// foreign
+foreign
+    : FOREIGN typeEx foreignBody
+    | EXTERNAL typeEx
+    ;
+foreignAutoTyped
+    : FOREIGN foreignBody
+    | EXTERNAL
+    ;
+foreignBody: LBRACE foreignElement* RBRACE ;
+foreignElement
+    : foreignPlatform RawString
+    | foreignPlatform TILDE String
+    ;
+foreignPlatform: ID ;
 
 
 ////// Lexer //////
@@ -219,16 +235,16 @@ LINE_COMMENT
 
 AS: 'as' ;
 ABSTRACT: 'abstract' ;
-DATA: 'class' ;
+DATA: 'data' ;
+EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
-FOLDING: 'folding' ;
-NAMESPACE: 'namespace' ;
+NAMESPACE: 'package' ;
 OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
-TYPECLASS: 'typeclass' ;
+TYPECLASS: 'class' ;
 VAR: 'var' ;
 VAL: 'val' ;
 STATIC: 'static' ;
@@ -275,21 +291,33 @@ Double: DIGITLETTER+ '.' DIGITLETTER+ ;
 
 // string
 String
-	:	'"' StringCharacters? '"'
-	;
+    :   '"' StringCharacters? '"'
+    ;
+
+RawString
+    :   '`' RawStringCharacters '`'
+    ;
 
 fragment StringCharacters
-	:	StringCharacter+
-	;
+    :   StringCharacter+
+    ;
+
+fragment RawStringCharacters
+    :   RawStringCharacter+
+    ;
+
+fragment RawStringCharacter
+    :   .
+    ;
 
 fragment StringCharacter
-	:	~["\\\r\n]
-	|	EscapeSequence
-	;
+    :   ~["\\\r\n]
+    |   EscapeSequence
+    ;
 
 fragment EscapeSequence
-	:	'\\' [btnfr"'\\]
-	;
+    :   '\\' [btnfr"'\\]
+    ;
 
 
 
