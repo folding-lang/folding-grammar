@@ -28,7 +28,7 @@ namespace
 
 //// body
 body
-    : LBRACE compo* RBRACE
+    : DO LBRACE compo* RBRACE
     ;
 compo
     : definitionInBody|value|returning
@@ -97,34 +97,17 @@ typeclassDefBody
     : LBRACE defInTypeclass* RBRACE
     ;
 defInTypeclass
-    : ID typeParam? parameterInTypeclass* typeEx
-    | opIdWrap typeParam? opParameterInTypeclass typeEx
-    | aopIdWrap typeParam? aopParameterInTypeclass typeEx
+    : ID typeParam? parameter* typeEx
+    | opIdWrap typeParam? opParameter typeEx
+    | aopIdWrap typeParam? aopParameter typeEx
     ;
-paramExInTypeclass: typeEx ELLIPSIS? ;
-parameterInTypeclass: LPAREN paramExInTypeclass* RPAREN ;
-opParameterInTypeclass: LPAREN paramExInTypeclass paramExInTypeclass RPAREN ;
-aopParameterInTypeclass: LPAREN paramExInTypeclass RPAREN ;
 
 //// impl
 impl
     : IMPL typeParam* typeEx implBody
     ;
-implBody: LBRACE defInImpl* RBRACE ;
+implBody: LBRACE def* RBRACE ;
 
-paramExInImpl: ID (ASSGIN value)? ;
-parameterInImpl: LPAREN paramExInImpl* RPAREN ;
-opParameterInImpl: LPAREN paramExInImpl paramExInImpl RPAREN ;
-aopParameterInImpl: LPAREN paramExInImpl RPAREN ;
-
-defInImpl
-    : ID parameterInImpl* ASSGIN value
-    | opIdWrap opParameterInImpl ASSGIN value
-    | aopIdWrap aopParameterInImpl ASSGIN value
-    | ID foreignAutoTyped
-    | opIdWrap foreignAutoTyped
-    | aopIdWrap foreignAutoTyped
-    ;
 
 //// define collect
 definition
@@ -137,14 +120,18 @@ value
     | Integer | LPAREN Integer RPAREN typeCasting?
     | Double | LPAREN Double RPAREN typeCasting?
     | String | LPAREN String RPAREN typeCasting?
-    | value argValue | LPAREN value argValue RPAREN typeCasting?
-    | value OPID value | LPAREN value OPID value RPAREN typeCasting?
-    | OPID value | LPAREN OPID value typeCasting?
+    | value argValue typeCasting?
+    | LPAREN value argValue RPAREN typeCasting?
+    | value OPID value typeCasting?
+    | LPAREN value OPID value RPAREN typeCasting?
+    | OPID value typeCasting?
+    | LPAREN OPID value RPAREN typeCasting?
     | value DOT value typeCasting?
     | (package_ DOT)? opIdWrap typeCasting?
     | (package_ DOT)? aopIdWrap typeCasting?
     | body typeCasting?
     | lambda typeCasting?
+    | value COLON value typeCasting?
     ;
 
 typeCasting: AS typeEx ;
@@ -158,7 +145,10 @@ opParameter: LPAREN paramEx paramEx RPAREN ;
 aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
-argEx: (ID ASSGIN)? value (TILDE typeEx)? ;
+argEx
+    : (ID ASSGIN)? value
+    | ID? LBRACE value* RBRACE
+    ;
 argValue
     : LPAREN argEx* RPAREN
     ;
@@ -170,9 +160,9 @@ def
     : ID typeParam? parameter* typeEx? ASSGIN value
     | opIdWrap typeParam? opParameter typeEx? ASSGIN value
     | aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | ID typeParam? parameterInTypeclass* foreign
-    | opIdWrap typeParam? opParameterInTypeclass foreign
-    | aopIdWrap typeParam? aopParameterInTypeclass foreign
+    | ID typeParam? parameter* foreign
+    | opIdWrap typeParam? opParameter foreign
+    | aopIdWrap typeParam? aopParameter foreign
     ;
 
 //// lambda
@@ -204,10 +194,6 @@ foreign
     : FOREIGN typeEx foreignBody
     | EXTERNAL typeEx
     ;
-foreignAutoTyped
-    : FOREIGN foreignBody
-    | EXTERNAL
-    ;
 foreignBody: LBRACE foreignElement* RBRACE ;
 foreignElement
     : foreignPlatform RawString
@@ -236,6 +222,7 @@ LINE_COMMENT
 AS: 'as' ;
 ABSTRACT: 'abstract' ;
 DATA: 'data' ;
+DO: 'do' ;
 EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
 NAMESPACE: 'package' ;
@@ -264,6 +251,7 @@ LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
 TILDE: '~' ;
+COLON: ':' ;
 
 //// ID
 
