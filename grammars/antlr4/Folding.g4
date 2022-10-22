@@ -47,7 +47,7 @@ class_
     : annotationBlock? ABSTRACT? Class ID typeParam? (TILDE typeEx+)? classBody
     ;
 classBody
-    : LBRACE constuctor* staticBlock (definitionInClass|abstractDefinitionInClass)* RBRACE
+    : LBRACE constuctor* staticBlock? (definitionInClass|abstractDefinitionInClass)* RBRACE
     ;
 definitionInClass
     : INTERNAL? OVERRIDE? (def)
@@ -187,14 +187,11 @@ foreignPlatform: ID ;
 annoValue
     : Integer | Double | String
     ;
-annoTypeEx
-    : 'Int' | 'Double' | 'String'
-    ;
 annoParam
-    : ID annoTypeEx
+    : ID typeEx
     ;
 annotationDef
-    : ID (LPAREN annoParam* RPAREN)?
+    : ANNOTATION ID (LPAREN annoParam* RPAREN)?
     ;
 annotation
     : ID annoValue*
