@@ -44,7 +44,8 @@ classBody
     : LBRACE constuctor* staticBlock? (definitionInClass|abstractDefinitionInClass)* RBRACE
     ;
 definitionInClass
-    : INTERNAL? OVERRIDE? (def)
+    : annotationBlock? INTERNAL? OVERRIDE? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
+    | annotationBlock? INTERNAL? OVERRIDE? ID compiledId? typeParam? parameter? foreign
     ;
 abstractDefinitionInClass
     : INTERNAL? (fieldInInterface|defInInterface)
@@ -67,12 +68,8 @@ valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : annotationBlock? ID typeParam? parameter? typeEx
-    | annotationBlock? opIdWrap typeParam? opParameter typeEx
-    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx
-    | annotationBlock? ID typeParam? parameter? typeEx? ASSGIN value
-    | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx
+    | annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
     ;
 
 //// type
@@ -133,12 +130,17 @@ argValue
 val_: VAL ID typeEx? ASSGIN value ;
 var_: VAR ID typeEx? ASSGIN value ;
 def
-    : annotationBlock? ID typeParam? parameter? typeEx? ASSGIN value
-    | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | annotationBlock? ID typeParam? parameter? foreign
-    | annotationBlock? opIdWrap typeParam? opParameter foreign
-    | annotationBlock? aopIdWrap typeParam? aopParameter foreign
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx? ASSGIN value
+    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter typeEx? ASSGIN value
+    | annotationBlock? ID compiledId? typeParam? parameter? foreign
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter foreign
+    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter foreign
+    ;
+
+//// compiling util
+compiledId
+    : LPAREN ASSGIN ID RPAREN
     ;
 
 //// lambda
