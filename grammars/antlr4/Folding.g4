@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* definition*
+    : namespace? importEx* (definition|field|annotationDef)*
     ;
 
 //// import
@@ -27,34 +27,33 @@ namespace
     ;
 
 //// body
-body
-    : IMMEDIATELY? DO LBRACE compo* RBRACE
+doBlock
+    : DO LBRACE compo* RBRACE
     ;
 compo
-    : definitionInBody|value|returning
-    ;
-definitionInBody
-    : def | var_ | val_ | impl | class_ | interface_
+    : def|value|returning
     ;
 returning
     : RETURN value
     ;
 
-//// data
+//// static
+staticBlock
+    : STATIC LBRACE (definition|field)* RBRACE
+    ;
+
+//// class
 class_
-    : ABSTRACT? DATA ID typeParam? (TILDE typeEx+)? classBody
+    : annotationBlock? ABSTRACT? Class ID typeParam? (TILDE typeEx+)? classBody
     ;
 classBody
-    : LBRACE constuctor* (definitionInClass|staticDefinition|abstractDefinitionInClass)* RBRACE
+    : LBRACE constuctor* staticBlock (definitionInClass|abstractDefinitionInClass)* RBRACE
     ;
 definitionInClass
-    : INTERNAL? OVERRIDE? (val_|var_|def|impl)
+    : INTERNAL? OVERRIDE? (def)
     ;
 abstractDefinitionInClass
-    : INTERNAL? (propertyInInterface|defInInterface)
-    ;
-staticDefinition
-    : STATIC (val_|var_|def|class_|interface_)
+    : INTERNAL? (fieldInInterface|defInInterface)
     ;
 constuctor
     : parameter+ (ASSGIN value)?
@@ -62,24 +61,24 @@ constuctor
 
 //// interface
 interface_
-    : INTERFACE ID typeParam? (TILDE typeEx+)? interfaceBody
+    : annotationBlock? INTERFACE ID typeParam? (TILDE typeEx+)? interfaceBody
     ;
 interfaceBody
-    : LBRACE (defInInterface|propertyInInterface|staticDefinition)* RBRACE
+    : LBRACE staticBlock? (defInInterface|fieldInInterface)* RBRACE
     ;
-propertyInInterface
-    : valInInterface | varInInterface
+fieldInInterface
+    : annotationBlock? (valInInterface | varInInterface)
     ;
 valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : ID typeParam? parameter* typeEx
-    | opIdWrap typeParam? opParameter typeEx
-    | aopIdWrap typeParam? aopParameter typeEx
-    | ID typeParam? parameter* typeEx? ASSGIN value
-    | opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
+    : annotationBlock? ID typeParam? parameter* typeEx
+    | annotationBlock? opIdWrap typeParam? opParameter typeEx
+    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx
+    | annotationBlock? ID typeParam? parameter* typeEx? ASSGIN value
+    | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
     ;
 
 //// type
@@ -87,31 +86,14 @@ typeParam
     : LSQUARE typeParamCompo+ RSQUARE
     ;
 typeParamCompo: ID (TILDE typeEx)* ;
-typeParamOnTypeclass
-    : LPAREN ID+ RPAREN
-    ;
-typeclass
-    : TYPECLASS ID typeParamOnTypeclass (TILDE typeEx+)? typeclassDefBody
-    ;
-typeclassDefBody
-    : LBRACE defInTypeclass* RBRACE
-    ;
-defInTypeclass
-    : ID typeParam? parameter* typeEx
-    | opIdWrap typeParam? opParameter typeEx
-    | aopIdWrap typeParam? aopParameter typeEx
-    ;
-
-//// impl
-impl
-    : IMPL typeParam* typeEx implBody
-    ;
-implBody: LBRACE def* RBRACE ;
 
 
 //// define collect
 definition
-    : def | val_ | var_ | typeclass | impl | class_ | interface_
+    : def | class_ | interface_
+    ;
+field
+    : val_ | var_
     ;
 
 //// value
@@ -129,7 +111,7 @@ value
     | value DOT value typeCasting?
     | (package_ DOT)? opIdWrap typeCasting?
     | (package_ DOT)? aopIdWrap typeCasting?
-    | body typeCasting?
+    | doBlock typeCasting?
     | lambda typeCasting?
     | value COLON value typeCasting?
     ;
@@ -138,7 +120,7 @@ typeCasting: AS typeEx ;
 
 //// parameter
 paramEx
-    : ID  typeEx ELLIPSIS? (ASSGIN value)?
+    : annotationBlock? ID typeEx ELLIPSIS? (ASSGIN value)?
     ;
 parameter: LPAREN paramEx* RPAREN ;
 opParameter: LPAREN paramEx paramEx RPAREN ;
@@ -157,17 +139,17 @@ argValue
 val_: VAL ID typeEx? ASSGIN value ;
 var_: VAR ID typeEx? ASSGIN value ;
 def
-    : ID typeParam? parameter* typeEx? ASSGIN value
-    | opIdWrap typeParam? opParameter typeEx? ASSGIN value
-    | aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | ID typeParam? parameter* foreign
-    | opIdWrap typeParam? opParameter foreign
-    | aopIdWrap typeParam? aopParameter foreign
+    : annotationBlock? ID typeParam? parameter* typeEx? ASSGIN value
+    | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
+    | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
+    | annotationBlock? ID typeParam? parameter* foreign
+    | annotationBlock? opIdWrap typeParam? opParameter foreign
+    | annotationBlock? aopIdWrap typeParam? aopParameter foreign
     ;
 
 //// lambda
 lambdaParamEx
-    : ID  (TILDE typeEx ELLIPSIS?)? (ASSGIN value)?
+    : ID (TILDE typeEx ELLIPSIS?)? (ASSGIN value)?
     ;
 lambda
     : LSQUARE lambdaParamEx* RSQUARE value
@@ -201,6 +183,27 @@ foreignElement
     ;
 foreignPlatform: ID ;
 
+//// annotation
+annoValue
+    : Integer | Double | String
+    ;
+annoTypeEx
+    : 'Int' | 'Double' | 'String'
+    ;
+annoParam
+    : ID annoTypeEx
+    ;
+annotationDef
+    : ID (LPAREN annoParam* RPAREN)?
+    ;
+annotation
+    : ID annoValue*
+    | ID LPAREN annoValue* RPAREN
+    ;
+annotationBlock
+    : LSQUARE COLON annotation* COLON RSQUARE
+    ;
+
 
 ////// Lexer //////
 
@@ -221,7 +224,8 @@ LINE_COMMENT
 
 AS: 'as' ;
 ABSTRACT: 'abstract' ;
-DATA: 'data' ;
+ANNOTATION: 'annotation' ;
+Class: 'class' ;
 DO: 'do' ;
 EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
@@ -229,14 +233,11 @@ NAMESPACE: 'package' ;
 OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
 IMPORT: 'import' ;
-IMPL: 'impl' ;
 RETURN: 'return' ;
-TYPECLASS: 'class' ;
 VAR: 'var' ;
 VAL: 'val' ;
 STATIC: 'static' ;
 INTERFACE: 'interface' ;
-IMMEDIATELY: 'immediately' ;
 
 
 //// Signs
