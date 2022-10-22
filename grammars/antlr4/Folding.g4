@@ -73,10 +73,10 @@ valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : annotationBlock? ID typeParam? parameter* typeEx
+    : annotationBlock? ID typeParam? parameter typeEx
     | annotationBlock? opIdWrap typeParam? opParameter typeEx
     | annotationBlock? aopIdWrap typeParam? aopParameter typeEx
-    | annotationBlock? ID typeParam? parameter* typeEx? ASSGIN value
+    | annotationBlock? ID typeParam? parameter typeEx? ASSGIN value
     | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
     | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
     ;
@@ -139,10 +139,10 @@ argValue
 val_: VAL ID typeEx? ASSGIN value ;
 var_: VAR ID typeEx? ASSGIN value ;
 def
-    : annotationBlock? ID typeParam? parameter* typeEx? ASSGIN value
+    : annotationBlock? ID typeParam? parameter typeEx? ASSGIN value
     | annotationBlock? opIdWrap typeParam? opParameter typeEx? ASSGIN value
     | annotationBlock? aopIdWrap typeParam? aopParameter typeEx? ASSGIN value
-    | annotationBlock? ID typeParam? parameter* foreign
+    | annotationBlock? ID typeParam? parameter foreign
     | annotationBlock? opIdWrap typeParam? opParameter foreign
     | annotationBlock? aopIdWrap typeParam? aopParameter foreign
     ;
