@@ -72,6 +72,11 @@ defInInterface
     | annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
     ;
 
+//// newdata
+newdata
+    : annotationBlock? NEWDATA ID LBRACE literal* RBRACE
+    ;
+
 //// type
 typeParam
     : LSQUARE typeParamCompo+ RSQUARE
@@ -198,7 +203,7 @@ annotationBlock
 
 //// literal
 literal
-    : DOUBLECOLON (package_ DOT)? ID
+    : DOUBLECOLON ID
     ;
 
 
@@ -236,6 +241,7 @@ VAR: 'var' ;
 VAL: 'val' ;
 STATIC: 'static' ;
 INTERFACE: 'interface' ;
+NEWDATA: 'newdata' ;
 
 
 //// Signs
