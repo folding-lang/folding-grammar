@@ -198,7 +198,7 @@ annotationBlock
 
 //// literal
 literal
-    : DOUBLECOLON ID
+    : DOUBLECOLON (package_ DOT)? ID
     ;
 
 
