@@ -168,7 +168,7 @@ typeExParameter
 
 //// foreign
 foreign
-    : FOREIGN typeEx foreignBody
+    : FOREIGN typeEx TEMPLATE? foreignBody
     | EXTERNAL typeEx
     ;
 foreignBody: LBRACE foreignElement* RBRACE ;
@@ -193,7 +193,7 @@ annotation
     | ID LPAREN annoValue* RPAREN
     ;
 annotationBlock
-    : LSQUARE COLON annotation* COLON RSQUARE
+    : LCOLONSQUARE annotation* RCOLONSQUARE
     ;
 
 //// literal
@@ -226,6 +226,7 @@ Class: 'class' ;
 DO: 'do' ;
 EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
+TEMPLATE: 'template' ;
 NAMESPACE: 'package' ;
 OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
