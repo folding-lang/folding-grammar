@@ -25,7 +25,7 @@ doBlock
     : DO LBRACE compo* RBRACE
     ;
 compo
-    : def|value|returning
+    : value|returning
     ;
 returning
     : RETURN value
@@ -89,22 +89,18 @@ field
 
 //// value
 value
-    : (package_ DOT)? ID typeCasting?
-    | Integer | LPAREN Integer RPAREN typeCasting?
-    | Double | LPAREN Double RPAREN typeCasting?
-    | String | LPAREN String RPAREN typeCasting?
-    | value argValue typeCasting?
-    | LPAREN value argValue RPAREN typeCasting?
-    | value OPID value typeCasting?
-    | LPAREN value OPID value RPAREN typeCasting?
-    | OPID value typeCasting?
-    | LPAREN OPID value RPAREN typeCasting?
-    | value DOT value typeCasting?
-    | (package_ DOT)? opIdWrap typeCasting?
-    | (package_ DOT)? aopIdWrap typeCasting?
-    | doBlock typeCasting?
-    | lambda typeCasting?
-    | value COLON value typeCasting?
+    : Integer | Double | String | literal
+    | (package_ DOT)? ID
+    | (package_ DOT)? opIdWrap
+    | (package_ DOT)? aopIdWrap
+    | value argValue
+    | value OPID value
+    | OPID value
+    | doBlock
+    | lambda
+    | value COLON value
+    | LPAREN value RPAREN
+    | value typeCasting
     ;
 
 typeCasting: AS typeEx ;
@@ -140,7 +136,7 @@ def
 
 //// compiling util
 compiledId
-    : LPAREN ASSGIN ID RPAREN
+    : literal
     ;
 
 //// lambda
@@ -157,14 +153,17 @@ aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 //// typeEx
 typeEx
-    : LPAREN typeEx ARROW typeEx RPAREN
-    | typeEx ARROW typeEx
-    | LPAREN typeExSingle ARROW typeEx RPAREN
-    | typeExSingle ARROW typeEx
+    : typeExParameter ARROW typeEx
     | typeExSingle
     ;
 typeExSingle
     : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
+    ;
+typeExParamEx
+    : typeEx ELLIPSIS?
+    ;
+typeExParameter
+    : LPAREN typeExParamEx* RPAREN
     ;
 
 //// foreign
@@ -195,6 +194,11 @@ annotation
     ;
 annotationBlock
     : LSQUARE COLON annotation* COLON RSQUARE
+    ;
+
+//// literal
+literal
+    : DOUBLECOLON ID
     ;
 
 
@@ -241,12 +245,15 @@ DOT: '.' ;
 LPAREN: '(' ;
 RPAREN: ')' ;
 LSQUARE: '[' ;
+LCOLONSQUARE: '[:' ;
 RSQUARE: ']' ;
+RCOLONSQUARE: ':]' ;
 LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
 TILDE: '~' ;
 COLON: ':' ;
+DOUBLECOLON: '::' ;
 
 //// ID
 
@@ -257,7 +264,7 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   [-<>#$.~|+=*&%^@!?/\\:;]  ;
+    :   [-<>#$.~|+=*&%^@!?/\\;,]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
