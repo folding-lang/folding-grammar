@@ -134,9 +134,9 @@ def
     : annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
     | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx? ASSGIN value
     | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter typeEx? ASSGIN value
-    | annotationBlock? ID compiledId? typeParam? parameter? foreign
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter foreign
-    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter foreign
+    | annotationBlock? TEMPLATE? ID compiledId? typeParam? parameter? (foreign|RawString)
+    | annotationBlock? TEMPLATE? opIdWrap compiledId? typeParam? opParameter (foreign|RawString)
+    | annotationBlock? TEMPLATE? aopIdWrap compiledId? typeParam? aopParameter (foreign|RawString)
     ;
 
 //// compiling util
@@ -173,7 +173,7 @@ typeExParameter
 
 //// foreign
 foreign
-    : FOREIGN typeEx TEMPLATE? foreignBody
+    : FOREIGN typeEx foreignBody
     | EXTERNAL typeEx
     ;
 foreignBody: LBRACE foreignElement* RBRACE ;
