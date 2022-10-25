@@ -104,6 +104,7 @@ value
     | doBlock
     | lambda
     | value COLON value
+    | value DOUBLECOLON value
     | LPAREN value RPAREN
     | value typeCasting
     ;
@@ -203,7 +204,7 @@ annotationBlock
 
 //// literal
 literal
-    : DOUBLECOLON ID
+    : Sharp ID
     ;
 
 
@@ -261,6 +262,7 @@ ARROW: '->' ;
 TILDE: '~' ;
 COLON: ':' ;
 DOUBLECOLON: '::' ;
+Sharp: '#' ;
 
 //// ID
 
