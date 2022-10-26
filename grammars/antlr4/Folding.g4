@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (definition|field|annotationDef)*
+    : namespace? importEx* (definition|field|annotationDef|newdata)*
     ;
 
 //// import
@@ -25,7 +25,7 @@ doBlock
     : DO LBRACE compo* RBRACE
     ;
 compo
-    : value|returning
+    : field|value|returning
     ;
 returning
     : RETURN value
@@ -41,7 +41,7 @@ class_
     : annotationBlock? ABSTRACT? Class ID typeParam? (TILDE typeEx+)? classBody
     ;
 classBody
-    : LBRACE constuctor* staticBlock? (definitionInClass|abstractDefinitionInClass)* RBRACE
+    : LBRACE constuctor* staticBlock? (field|definitionInClass|abstractDefinitionInClass)* RBRACE
     ;
 definitionInClass
     : annotationBlock? INTERNAL? OVERRIDE? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
@@ -89,7 +89,7 @@ definition
     : def | class_ | interface_
     ;
 field
-    : val_ | var_
+    : annotationBlock? (val_ | var_)
     ;
 
 //// value
@@ -129,15 +129,20 @@ argValue
     ;
 
 //// definition
-val_: VAL ID typeEx? ASSGIN value ;
-var_: VAR ID typeEx? ASSGIN value ;
+val_: valSetted|valInInterface ;
+var_: varSetted|varInInterface ;
+valSetted: VAL ID typeEx? ASSGIN value ;
+varSetted: VAR ID typeEx? ASSGIN value ;
 def
     : annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
     | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx? ASSGIN value
     | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter typeEx? ASSGIN value
-    | annotationBlock? TEMPLATE? ID compiledId? typeParam? parameter? (foreign|RawString)
-    | annotationBlock? TEMPLATE? opIdWrap compiledId? typeParam? opParameter (foreign|RawString)
-    | annotationBlock? TEMPLATE? aopIdWrap compiledId? typeParam? aopParameter (foreign|RawString)
+    | annotationBlock? ID compiledId? typeParam? parameter? foreign
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter foreign
+    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter foreign
+    | annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (foreign|RawString)
+    | annotationBlock? TEMPLATE opIdWrap compiledId? typeParam? opParameter (foreign|RawString)
+    | annotationBlock? TEMPLATE aopIdWrap compiledId? typeParam? aopParameter (foreign|RawString)
     ;
 
 //// compiling util
