@@ -38,17 +38,10 @@ staticBlock
 
 //// class
 class_
-    : annotationBlock? ABSTRACT? Class ID typeParam? (TILDE typeEx+)? classBody
+    : annotationBlock? Class ID typeParam? constuctor classBody
     ;
 classBody
-    : LBRACE constuctor* staticBlock? (field|definitionInClass|abstractDefinitionInClass)* RBRACE
-    ;
-definitionInClass
-    : annotationBlock? INTERNAL? OVERRIDE? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
-    | annotationBlock? INTERNAL? OVERRIDE? ID compiledId? typeParam? parameter? foreign
-    ;
-abstractDefinitionInClass
-    : INTERNAL? (fieldInInterface|defInInterface)
+    : LBRACE constuctor* staticBlock? (field|def)* RBRACE
     ;
 constuctor
     : parameter+ (ASSGIN value)?
@@ -59,17 +52,14 @@ interface_
     : annotationBlock? INTERFACE ID typeParam? (TILDE typeEx+)? interfaceBody
     ;
 interfaceBody
-    : LBRACE staticBlock? (defInInterface|fieldInInterface)* RBRACE
-    ;
-fieldInInterface
-    : annotationBlock? (valInInterface | varInInterface)
+    : LBRACE staticBlock? defInInterface* RBRACE
     ;
 valInInterface: VAL ID typeEx ;
 varInInterface: VAR ID typeEx ;
 
 defInInterface
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx
-    | annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
+    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW COLON typeEx
+    | annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
     ;
 
 //// newdata
@@ -79,7 +69,7 @@ newdata
 
 //// type
 typeParam
-    : LSQUARE typeParamCompo+ RSQUARE
+    : typeParamCompo+
     ;
 typeParamCompo: ID (TILDE typeEx)* ;
 
@@ -115,9 +105,9 @@ typeCasting: AS typeEx ;
 paramEx
     : annotationBlock? ID typeEx ELLIPSIS? (ASSGIN value)?
     ;
-parameter: LPAREN paramEx* RPAREN ;
-opParameter: LPAREN paramEx paramEx RPAREN ;
-aopParameter: LPAREN paramEx RPAREN ;
+parameter: COLON paramEx* ;
+opParameter: COLON paramEx paramEx ;
+aopParameter: COLON paramEx ;
 
 //// argument
 argEx
@@ -125,7 +115,7 @@ argEx
     | ID? LBRACE value* RBRACE
     ;
 argValue
-    : LPAREN argEx* RPAREN
+    : (TILDE typeEx+)? LPAREN argEx* RPAREN
     ;
 
 //// definition
@@ -134,9 +124,9 @@ var_: varSetted|varInInterface ;
 valSetted: VAL ID typeEx? ASSGIN value ;
 varSetted: VAR ID typeEx? ASSGIN value ;
 def
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx? ASSGIN value
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx? ASSGIN value
-    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter typeEx? ASSGIN value
+    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter BIGARROW (COLON typeEx)? value
+    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter BIGARROW (COLON typeEx)? value
     | annotationBlock? ID compiledId? typeParam? parameter? foreign
     | annotationBlock? opIdWrap compiledId? typeParam? opParameter foreign
     | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter foreign
@@ -155,7 +145,7 @@ lambdaParamEx
     : ID (TILDE typeEx ELLIPSIS?)? (ASSGIN value)?
     ;
 lambda
-    : LSQUARE lambdaParamEx* RSQUARE value
+    : LSQUARE (typeParam COLON)? lambdaParamEx* RSQUARE value
     ;
 
 //// id utill
@@ -253,6 +243,7 @@ NEWDATA: 'newdata' ;
 //// Signs
 
 ASSGIN: '=' ;
+BIGARROW: '=>' ;
 ELLIPSIS: '...' ;
 DOT: '.' ;
 LPAREN: '(' ;
