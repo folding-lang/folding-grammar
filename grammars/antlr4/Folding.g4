@@ -38,13 +38,13 @@ staticBlock
 
 //// class
 class_
-    : annotationBlock? Class ID typeParam? constructor_ classBody
+    : annotationBlock? CLASS ID typeParam? constructor_ classBody
     ;
 classBody
-    : LBRACE doBlock? subconstructor* staticBlock? (field|def)* RBRACE
-    | LBRACE subconstructor* doBlock? staticBlock? (field|def)* RBRACE
-    | LBRACE staticBlock? doBlock? subconstructor* (field|def)* RBRACE
-    | LBRACE staticBlock? subconstructor* doBlock? (field|def)* RBRACE
+    : LBRACE doBlock? subconstructor* staticBlock? field* defInInterface* RBRACE
+    | LBRACE subconstructor* doBlock? staticBlock? field* defInInterface* RBRACE
+    | LBRACE staticBlock? doBlock? subconstructor* field* defInInterface* RBRACE
+    | LBRACE staticBlock? subconstructor* doBlock? field* defInInterface* RBRACE
     ;
 constructor_
     : parameter
@@ -228,7 +228,7 @@ LINE_COMMENT
 AS: 'as' ;
 ABSTRACT: 'abstract' ;
 ANNOTATION: 'annotation' ;
-Class: 'class' ;
+CLASS: 'class' ;
 DO: 'do' ;
 EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
@@ -237,6 +237,7 @@ NAMESPACE: 'package' ;
 OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
 IMPORT: 'import' ;
+IMPL: 'impl' ;
 RETURN: 'return' ;
 VAR: 'var' ;
 VAL: 'val' ;
