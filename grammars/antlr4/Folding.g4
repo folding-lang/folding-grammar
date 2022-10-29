@@ -38,13 +38,19 @@ staticBlock
 
 //// class
 class_
-    : annotationBlock? Class ID typeParam? constuctor classBody
+    : annotationBlock? Class ID typeParam? constructor_ classBody
     ;
 classBody
-    : LBRACE constuctor* staticBlock? (field|def)* RBRACE
+    : LBRACE doBlock? subconstructor* staticBlock? (field|def)* RBRACE
+    | LBRACE subconstructor* doBlock? staticBlock? (field|def)* RBRACE
+    | LBRACE staticBlock? doBlock? subconstructor* (field|def)* RBRACE
+    | LBRACE staticBlock? subconstructor* doBlock? (field|def)* RBRACE
     ;
-constuctor
-    : parameter+ (ASSGIN value)?
+constructor_
+    : parameter
+    ;
+subconstructor
+    : constructor_ BIGARROW value
     ;
 
 //// interface
@@ -94,7 +100,6 @@ value
     | doBlock
     | lambda
     | value COLON value
-    | value DOUBLECOLON value
     | LPAREN value RPAREN
     | value typeCasting
     ;
