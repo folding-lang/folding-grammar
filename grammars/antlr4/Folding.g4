@@ -99,7 +99,7 @@ value
     | OPID value
     | doBlock
     | lambda
-    | value COLON value
+    | value COLON ID
     | LPAREN value RPAREN
     | value typeCasting
     ;
@@ -159,7 +159,7 @@ aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 //// typeEx
 typeEx
-    : typeExParameter ARROW typeEx
+    : typeExParameter
     | typeExSingle
     ;
 typeExSingle
@@ -169,7 +169,7 @@ typeExParamEx
     : typeEx ELLIPSIS?
     ;
 typeExParameter
-    : LPAREN typeExParamEx* RPAREN
+    : LPAREN typeExParamEx* RPAREN ARROW typeEx
     ;
 
 //// foreign
