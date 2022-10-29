@@ -41,16 +41,27 @@ class_
     : annotationBlock? CLASS ID typeParam? constructor_ classBody
     ;
 classBody
-    : LBRACE doBlock? subconstructor* staticBlock? field* defInInterface* RBRACE
-    | LBRACE subconstructor* doBlock? staticBlock? field* defInInterface* RBRACE
-    | LBRACE staticBlock? doBlock? subconstructor* field* defInInterface* RBRACE
-    | LBRACE staticBlock? subconstructor* doBlock? field* defInInterface* RBRACE
+    : LBRACE doBlock? subconstructor* staticBlock? field* defInInterface* impl* RBRACE
+    | LBRACE subconstructor* doBlock? staticBlock? field* defInInterface* impl* RBRACE
+    | LBRACE staticBlock? doBlock? subconstructor* field* defInInterface* impl* RBRACE
+    | LBRACE staticBlock? subconstructor* doBlock? field* defInInterface* impl* RBRACE
     ;
 constructor_
     : parameter
     ;
 subconstructor
     : constructor_ BIGARROW value
+    ;
+
+//// impl
+impl
+    : IMPL typeParam? typeEx implBody
+    ;
+implBody
+    : LBRACE defInImpl RBRACE
+    ;
+defInImpl
+    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
     ;
 
 //// interface
@@ -132,12 +143,12 @@ def
     : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
     | annotationBlock? opIdWrap compiledId? typeParam? opParameter BIGARROW (COLON typeEx)? value
     | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter BIGARROW (COLON typeEx)? value
-    | annotationBlock? ID compiledId? typeParam? parameter? foreign
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter foreign
-    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter foreign
-    | annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (foreign|RawString)
-    | annotationBlock? TEMPLATE opIdWrap compiledId? typeParam? opParameter (foreign|RawString)
-    | annotationBlock? TEMPLATE aopIdWrap compiledId? typeParam? aopParameter (foreign|RawString)
+    | annotationBlock? ID compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter FOREIGN typeEx foreignBody?
+    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter FOREIGN typeEx foreignBody?
+    | annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    | annotationBlock? TEMPLATE opIdWrap compiledId? typeParam? opParameter (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    | annotationBlock? TEMPLATE aopIdWrap compiledId? typeParam? aopParameter (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
     ;
 
 //// compiling util
@@ -173,10 +184,6 @@ typeExParameter
     ;
 
 //// foreign
-foreign
-    : FOREIGN typeEx foreignBody
-    | EXTERNAL typeEx
-    ;
 foreignBody: LBRACE foreignElement* RBRACE ;
 foreignElement
     : foreignPlatform RawString
