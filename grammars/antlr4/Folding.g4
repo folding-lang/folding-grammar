@@ -95,8 +95,8 @@ value
     | (package_ DOT)? opIdWrap
     | (package_ DOT)? aopIdWrap
     | value argValue
-    | value OPID value
     | OPID value
+    | value OPID value
     | doBlock
     | lambda
     | value COLON ID
