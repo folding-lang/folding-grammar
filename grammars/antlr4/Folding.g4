@@ -25,10 +25,13 @@ doBlock
     : DO LBRACE compo* RBRACE
     ;
 compo
-    : field|value|returning
+    : fieldAssign|value|returning
     ;
 returning
     : RETURN value
+    ;
+fieldAssign
+    : value ASSGIN value
     ;
 
 //// static
