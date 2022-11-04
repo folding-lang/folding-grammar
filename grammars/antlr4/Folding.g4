@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (definition|field|annotationDef|newdata)*
+    : namespace? importEx* (definition|field|annotationDef|newdata|implDeep)*
     ;
 
 //// import
@@ -34,52 +34,34 @@ fieldAssign
     : value ASSGIN value
     ;
 
-//// static
-staticBlock
-    : STATIC LBRACE (definition|field)* RBRACE
-    ;
-
 //// class
 class_
-    : annotationBlock? CLASS ID typeParam? constructor_ classBody
+    : annotationBlock? CLASS ID typeParam? (BIGARROW constructor_+)? classBody
     ;
 classBody
-    : LBRACE doBlock? subconstructor* staticBlock? field* defInInterface* impl* RBRACE
-    | LBRACE subconstructor* doBlock? staticBlock? field* defInInterface* impl* RBRACE
-    | LBRACE staticBlock? doBlock? subconstructor* field* defInInterface* impl* RBRACE
-    | LBRACE staticBlock? subconstructor* doBlock? field* defInInterface* impl* RBRACE
+    : LBRACE field* defInInterface* implDeep* RBRACE
     ;
 constructor_
-    : parameter
+    : ID parameter doBlock?
     ;
-subconstructor
-    : constructor_ BIGARROW value
-    ;
-
-//// impl
-impl
-    : IMPL typeParam? typeEx implBody
-    ;
-implBody
-    : LBRACE defInImpl RBRACE
-    ;
-defInImpl
-    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
-    ;
-
-//// interface
-interface_
-    : annotationBlock? INTERFACE ID typeParam? (TILDE typeEx+)? interfaceBody
-    ;
-interfaceBody
-    : LBRACE staticBlock? defInInterface* RBRACE
-    ;
-valInInterface: VAL ID typeEx ;
-varInInterface: VAR ID typeEx ;
 
 defInInterface
     : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW COLON typeEx
     | annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
+    ;
+
+//// impl
+implDeep
+    : IMPL typeParam? typeEx implBody?
+    ;
+implHigh
+    : IMPL typeEx typeParam? typeEx implBody?
+    ;
+implBody
+    : LBRACE defInImpl* RBRACE
+    ;
+defInImpl
+    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
     ;
 
 //// newdata
@@ -96,7 +78,7 @@ typeParamCompo: ID (TILDE typeEx)* ;
 
 //// define collect
 definition
-    : def | class_ | interface_
+    : def | class_
     ;
 field
     : annotationBlock? (val_ | var_)
@@ -138,8 +120,10 @@ argValue
     ;
 
 //// definition
-val_: valSetted|valInInterface ;
-var_: varSetted|varInInterface ;
+val_: valSetted|valNotInit ;
+var_: varSetted|varNotInit ;
+valNotInit: VAL ID typeEx ;
+varNotInit: VAR ID typeEx ;
 valSetted: VAL ID typeEx? ASSGIN value ;
 varSetted: VAR ID typeEx? ASSGIN value ;
 def
