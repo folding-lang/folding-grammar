@@ -49,8 +49,8 @@ constructorSelf
     ;
 
 defInInterface
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
-    | annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx value
+    | annotationBlock? ID compiledId? typeParam? parameter? typeEx value
     ;
 
 //// impl
