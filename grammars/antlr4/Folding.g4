@@ -49,8 +49,7 @@ constructorSelf
     ;
 
 defInInterface
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx value
-    | annotationBlock? ID compiledId? typeParam? parameter? typeEx value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx value?
     ;
 
 //// impl
@@ -61,7 +60,7 @@ implBody
     : LBRACE defInImpl* RBRACE
     ;
 defInImpl
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx ASSGIN value
     ;
 
 //// newdata
@@ -105,6 +104,8 @@ paramEx
     | annotationBlock? value
     ;
 parameter: LPAREN paramEx+ RPAREN ;
+opParameter: LPAREN paramEx paramEx RPAREN ;
+aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
 argEx
@@ -125,19 +126,19 @@ def
     | foreignDef
     ;
 justDef
-    : annotationBlock? ID compiledId? parameter? BIGARROW (COLON typeEx)? value
-    | annotationBlock? compiledId? paramEx OPID paramEx BIGARROW (COLON typeEx)? value
-    | annotationBlock? compiledId? OPID paramEx BIGARROW (COLON typeEx)? value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx ASSGIN value
+    | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx ASSGIN value
+    | annotationBlock? opIdWrap compiledId? typeParam? aopParameter typeEx ASSGIN value
     ;
 template
-    : annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
-    | annotationBlock? TEMPLATE compiledId? paramEx OPID paramEx (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
-    | annotationBlock? TEMPLATE compiledId? OPID paramEx (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    : annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
+    | annotationBlock? TEMPLATE ID compiledId? typeParam? opParameter (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
+    | annotationBlock? TEMPLATE ID compiledId? typeParam? aopParameter (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
     ;
 foreignDef
     : annotationBlock? ID compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
-    | annotationBlock? compiledId? paramEx OPID paramEx FOREIGN typeEx foreignBody?
-    | annotationBlock? compiledId? OPID paramEx FOREIGN typeEx foreignBody?
+    | annotationBlock? ID compiledId? typeParam? opParameter FOREIGN typeEx foreignBody?
+    | annotationBlock? ID compiledId? typeParam? aopParameter FOREIGN typeEx foreignBody?
     ;
 
 //// compiling util
@@ -238,7 +239,6 @@ NEWSET: 'newset' ;
 //// Signs
 
 ASSGIN: '=' ;
-BIGARROW: '=>' ;
 ELLIPSIS: '...' ;
 DOT: '.' ;
 LPAREN: '(' ;
