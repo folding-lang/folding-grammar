@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (definition|field|annotationDef|newdata|implDeep)*
+    : namespace? importEx* (definition|field|annotationDef|newset)*
     ;
 
 //// import
@@ -36,37 +36,37 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? CLASS ID typeParam? (BIGARROW constructor_+)? classBody
+    : annotationBlock? CLASS ID typeParam? classBody
     ;
 classBody
-    : LBRACE field* defInInterface* implDeep* RBRACE
+    : LBRACE (constructor_*|constructorSelf) field* defInInterface* impl* RBRACE
     ;
 constructor_
-    : ID parameter doBlock?
+    : ID parameter? doBlock?
+    ;
+constructorSelf
+    : parameter? doBlock?
     ;
 
 defInInterface
-    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW COLON typeEx
-    | annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
+    | annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
     ;
 
 //// impl
-implDeep
+impl
     : IMPL typeParam? typeEx implBody?
-    ;
-implHigh
-    : IMPL typeEx typeParam? typeEx implBody?
     ;
 implBody
     : LBRACE defInImpl* RBRACE
     ;
 defInImpl
-    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
+    : annotationBlock? ID compiledId? typeParam? parameter? typeEx BIGARROW value
     ;
 
 //// newdata
-newdata
-    : annotationBlock? NEWDATA ID LBRACE literal* RBRACE
+newset
+    : annotationBlock? NEWSET ID LBRACE Literal* RBRACE
     ;
 
 //// type
@@ -80,35 +80,31 @@ typeParamCompo: ID (TILDE typeEx)* ;
 definition
     : def | class_
     ;
-field
-    : annotationBlock? (val_ | var_)
-    ;
 
 //// value
 value
-    : Integer | Double | String | literal
+    : Integer | Double | String | Literal
     | (package_ DOT)? ID
     | (package_ DOT)? opIdWrap
     | (package_ DOT)? aopIdWrap
+    | value COLON ID
     | value argValue
+    | value typeCasting
     | OPID value
     | value OPID value
     | doBlock
     | lambda
-    | value COLON ID
     | LPAREN value RPAREN
-    | value typeCasting
     ;
 
-typeCasting: AS typeEx ;
+typeCasting: TILDE typeEx ;
 
 //// parameter
 paramEx
-    : annotationBlock? ID typeEx ELLIPSIS? (ASSGIN value)?
+    : annotationBlock? value TILDE typeEx
+    | annotationBlock? value
     ;
-parameter: COLON paramEx* ;
-opParameter: COLON paramEx paramEx ;
-aopParameter: COLON paramEx ;
+parameter: LPAREN paramEx+ RPAREN ;
 
 //// argument
 argEx
@@ -120,35 +116,38 @@ argValue
     ;
 
 //// definition
-val_: valSetted|valNotInit ;
-var_: varSetted|varNotInit ;
-valNotInit: VAL ID typeEx ;
-varNotInit: VAR ID typeEx ;
-valSetted: VAL ID typeEx? ASSGIN value ;
-varSetted: VAR ID typeEx? ASSGIN value ;
+field: fieldSetted|fieldNotInit ;
+fieldNotInit: FIELD MUTABLE? ID typeEx ;
+fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
 def
-    : annotationBlock? ID compiledId? typeParam? parameter? BIGARROW (COLON typeEx)? value
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter BIGARROW (COLON typeEx)? value
-    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter BIGARROW (COLON typeEx)? value
-    | annotationBlock? ID compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter FOREIGN typeEx foreignBody?
-    | annotationBlock? aopIdWrap compiledId? typeParam? aopParameter FOREIGN typeEx foreignBody?
-    | annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
-    | annotationBlock? TEMPLATE opIdWrap compiledId? typeParam? opParameter (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
-    | annotationBlock? TEMPLATE aopIdWrap compiledId? typeParam? aopParameter (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    : justDef
+    | template
+    | foreignDef
+    ;
+justDef
+    : annotationBlock? ID compiledId? parameter? BIGARROW (COLON typeEx)? value
+    | annotationBlock? compiledId? paramEx OPID paramEx BIGARROW (COLON typeEx)? value
+    | annotationBlock? compiledId? OPID paramEx BIGARROW (COLON typeEx)? value
+    ;
+template
+    : annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    | annotationBlock? TEMPLATE compiledId? paramEx OPID paramEx (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    | annotationBlock? TEMPLATE compiledId? OPID paramEx (FOREIGN typeEx foreignBody?|BIGARROW typeEx RawString)
+    ;
+foreignDef
+    : annotationBlock? ID compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
+    | annotationBlock? compiledId? paramEx OPID paramEx FOREIGN typeEx foreignBody?
+    | annotationBlock? compiledId? OPID paramEx FOREIGN typeEx foreignBody?
     ;
 
 //// compiling util
 compiledId
-    : literal
+    : Literal
     ;
 
 //// lambda
-lambdaParamEx
-    : ID (TILDE typeEx ELLIPSIS?)? (ASSGIN value)?
-    ;
 lambda
-    : LSQUARE (typeParam COLON)? lambdaParamEx* RSQUARE value
+    : LSQUARE paramEx* RSQUARE value
     ;
 
 //// id utill
@@ -197,8 +196,8 @@ annotationBlock
     ;
 
 //// literal
-literal
-    : Sharp ID
+Literal
+    : '#' IDLETTERHEAD IDLETTERTAIL*
     ;
 
 
@@ -219,25 +218,21 @@ LINE_COMMENT
 
 //// Keywards
 
-AS: 'as' ;
 ABSTRACT: 'abstract' ;
 ANNOTATION: 'annotation' ;
 CLASS: 'class' ;
 DO: 'do' ;
-EXTERNAL: 'external' ;
 FOREIGN: 'foreign' ;
 TEMPLATE: 'template' ;
 NAMESPACE: 'package' ;
-OVERRIDE: 'override' ;
 INTERNAL: 'internal' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
 RETURN: 'return' ;
-VAR: 'var' ;
-VAL: 'val' ;
+MUTABLE: 'mutable' ;
+FIELD: 'field' ;
 STATIC: 'static' ;
-INTERFACE: 'interface' ;
-NEWDATA: 'newdata' ;
+NEWSET: 'newset' ;
 
 
 //// Signs
@@ -257,8 +252,6 @@ RBRACE: '}' ;
 ARROW: '->' ;
 TILDE: '~' ;
 COLON: ':' ;
-DOUBLECOLON: '::' ;
-Sharp: '#' ;
 
 //// ID
 
