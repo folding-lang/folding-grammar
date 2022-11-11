@@ -104,8 +104,6 @@ paramEx
     | annotationBlock? value
     ;
 parameter: LPAREN paramEx+ RPAREN ;
-opParameter: LPAREN paramEx paramEx RPAREN ;
-aopParameter: LPAREN paramEx RPAREN ;
 
 //// argument
 argEx
@@ -126,19 +124,13 @@ def
     | foreignDef
     ;
 justDef
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx ASSGIN value
-    | annotationBlock? opIdWrap compiledId? typeParam? opParameter typeEx ASSGIN value
-    | annotationBlock? opIdWrap compiledId? typeParam? aopParameter typeEx ASSGIN value
+    : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? typeEx ASSGIN value
     ;
 template
-    : annotationBlock? TEMPLATE ID compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
-    | annotationBlock? TEMPLATE ID compiledId? typeParam? opParameter (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
-    | annotationBlock? TEMPLATE ID compiledId? typeParam? aopParameter (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
+    : annotationBlock? TEMPLATE (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
     ;
 foreignDef
-    : annotationBlock? ID compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
-    | annotationBlock? ID compiledId? typeParam? opParameter FOREIGN typeEx foreignBody?
-    | annotationBlock? ID compiledId? typeParam? aopParameter FOREIGN typeEx foreignBody?
+    : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
 
 //// compiling util
