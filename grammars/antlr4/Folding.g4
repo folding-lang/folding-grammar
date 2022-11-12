@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (definition|field|annotationDef|newset)*
+    : namespace? importEx* (definition|field|annotationDef)*
     ;
 
 //// import
@@ -61,11 +61,6 @@ implBody
     ;
 defInImpl
     : annotationBlock? ID compiledId? typeParam? parameter? typeEx ASSGIN value
-    ;
-
-//// newdata
-newset
-    : annotationBlock? NEWSET ID LBRACE Literal* RBRACE
     ;
 
 //// type
@@ -229,7 +224,6 @@ IMPL: 'impl' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 FIELD: 'field' ;
-NEWSET: 'newset' ;
 
 
 //// Signs
