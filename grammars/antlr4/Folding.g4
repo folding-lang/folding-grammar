@@ -100,10 +100,9 @@ typeCasting: TILDE typeEx ;
 
 //// parameter
 paramEx
-    : annotationBlock? value TILDE typeEx
-    | annotationBlock? value
+    : annotationBlock? ID ELLIPSIS? (TILDE typeEx)?
     ;
-parameter: LPAREN paramEx+ RPAREN ;
+parameter: LPAREN paramEx* (COLON value+)? RPAREN ;
 
 //// argument
 argEx
@@ -211,7 +210,6 @@ LINE_COMMENT
 
 //// Keywards
 
-ABSTRACT: 'abstract' ;
 ANNOTATION: 'annotation' ;
 CLASS: 'class' ;
 DO: 'do' ;
@@ -224,7 +222,6 @@ IMPL: 'impl' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 FIELD: 'field' ;
-STATIC: 'static' ;
 NEWSET: 'newset' ;
 
 
