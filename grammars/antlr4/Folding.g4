@@ -164,7 +164,7 @@ typeExParameter
     ;
 
 //// foreign
-foreignBody: LBRACE foreignElement* RBRACE ;
+foreignBody: LBRACE foreignElement* RBRACE | RawString ;
 foreignElement
     : foreignPlatform RawString
     | foreignPlatform TILDE String
