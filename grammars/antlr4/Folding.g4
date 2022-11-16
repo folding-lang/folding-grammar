@@ -83,7 +83,7 @@ value
     | (package_ DOT)? aopIdWrap
     | value COLON ID
     | value argValue
-    | value (typeCasting|typeCastingSoft)
+    | value typeCasting
     | OPID value
     | value OPID value
     | doBlock
@@ -92,15 +92,13 @@ value
     ;
 
 typeCasting: As typeEx ;
-typeCastingSoft: AsMaybe typeEx ;
 
 //// parameter
 paramEx
-    : ID ELLIPSIS? (TILDE typeEx)?
+    : ID ELLIPSIS? TILDE typeEx
     ;
 paramCEx
     : value TILDE typeEx
-    | value
     ;
 parameter
     : LPAREN paramEx* RPAREN (TILDE LPAREN paramCEx+ RPAREN)?
@@ -242,7 +240,6 @@ RBRACE: '}' ;
 ARROW: '->' ;
 TILDE: '~' ;
 As: '~>' ;
-AsMaybe: '~?>' ;
 COLON: ':' ;
 
 //// ID
