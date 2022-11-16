@@ -110,7 +110,7 @@ argEx
     | ID? LBRACE value* RBRACE
     ;
 argValue
-    : (TILDE typeEx+)? LPAREN argEx* RPAREN
+    : LPAREN (typeEx+ TILDE)?  argEx* RPAREN
     ;
 
 //// definition
