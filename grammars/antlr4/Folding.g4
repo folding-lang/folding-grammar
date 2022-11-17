@@ -39,7 +39,7 @@ class_
     : annotationBlock? CLASS ID typeParam? classBody
     ;
 classBody
-    : LBRACE (constructor_*|constructorSelf) field* defInInterface* impl* RBRACE
+    : LBRACE (constructor_*|constructorSelf) field* defInInterface* inherit? impl* RBRACE
     ;
 constructor_
     : ID parameter? doBlock?
@@ -53,6 +53,9 @@ defInInterface
     ;
 
 //// impl
+inherit
+    : INHERIT typeParam? typeEx implBody?
+    ;
 impl
     : IMPL typeParam? typeEx implBody?
     ;
@@ -210,11 +213,11 @@ ANNOTATION: 'annotation' ;
 CLASS: 'class' ;
 DO: 'do' ;
 FOREIGN: 'foreign' ;
-TEMPLATE: 'template' ;
 NAMESPACE: 'package' ;
 INTERNAL: 'internal' ;
 IMPORT: 'import' ;
 IMPL: 'impl' ;
+INHERIT: 'inherit' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 FIELD: 'field' ;
