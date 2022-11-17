@@ -121,7 +121,7 @@ field: fieldSetted|fieldNotInit ;
 fieldNotInit: FIELD MUTABLE? ID typeEx ;
 fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
 def
-    : justDef
+    : justDef inverseDefining
     | foreignDef
     ;
 justDef
@@ -130,6 +130,10 @@ justDef
 foreignDef
     : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
+inverseDefining
+    : INVERSE LPAREN inverseDefCompo+ RPAREN
+    ;
+inverseDefCompo: ID typeEx ASSGIN value ;
 
 //// compiling util
 compiledId
@@ -221,6 +225,7 @@ INHERIT: 'inherit' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 FIELD: 'field' ;
+INVERSE: 'inverse' ;
 
 
 //// Signs
