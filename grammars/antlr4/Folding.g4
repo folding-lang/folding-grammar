@@ -79,19 +79,26 @@ definition
     ;
 
 //// value
+defaultValue: Integer | Double | String | Literal ;
 value
-    : Integer | Double | String | Literal
-    | (package_ DOT)? ID
-    | (package_ DOT)? opIdWrap
-    | (package_ DOT)? aopIdWrap
-    | value COLON ID
-    | value argValue
-    | value typeCasting
-    | OPID value
-    | value OPID value
-    | doBlock
-    | lambda
-    | LPAREN value RPAREN
+    : defaultValue #justDefaultValue
+    | DOUBLECOLON reference #reflected
+    | LPAREN ID+ FROM value RPAREN #callInvFunc
+    | reference argValue? #callFuncthon
+    | value COLON ID argValue? #callMethod
+    | value DOUBLECOLON ID #reflectedMethod
+    | value SHARP ID #getField
+    | value typeCasting #valueTypeCasting
+    | OPID value #callAopFunc
+    | value OPID value #callOpFunc
+    | doBlock #doExpresion
+    | lambda #justLambda
+    | LPAREN value RPAREN #parenedValue
+    ;
+reference
+    : (package_ DOT)? ID #justRef
+    | (package_ DOT)? opIdWrap #opFuncRef
+    | (package_ DOT)? aopIdWrap #aopFuncRef
     ;
 
 typeCasting: As typeEx ;
@@ -133,7 +140,10 @@ foreignDef
 inverseDefining
     : INVERSE LPAREN inverseDefCompo+ RPAREN
     ;
-inverseDefCompo: ID typeEx ASSGIN value ;
+inverseDefCompo
+    : typeEx value #outputParam
+    | As ID #necessaryParam
+    ;
 
 //// lambda
 lambda
@@ -221,6 +231,7 @@ RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 FIELD: 'field' ;
 INVERSE: 'inverse' ;
+FROM: 'from' ;
 
 
 //// Signs
@@ -240,6 +251,8 @@ ARROW: '->' ;
 TILDE: '~' ;
 As: '~>' ;
 COLON: ':' ;
+DOUBLECOLON: '::' ;
+SHARP: '#' ;
 
 //// ID
 
