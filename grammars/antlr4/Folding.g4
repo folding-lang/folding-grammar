@@ -49,7 +49,7 @@ constructorSelf
     ;
 
 defInInterface
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx value?
+    : annotationBlock? ID typeParam? parameter? typeEx value?
     ;
 
 //// impl
@@ -63,7 +63,7 @@ implBody
     : LBRACE defInImpl* RBRACE
     ;
 defInImpl
-    : annotationBlock? ID compiledId? typeParam? parameter? typeEx ASSGIN value
+    : annotationBlock? ID typeParam? parameter? typeEx ASSGIN value
     ;
 
 //// type
@@ -125,20 +125,15 @@ def
     | foreignDef
     ;
 justDef
-    : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? typeEx ASSGIN value
+    : annotationBlock? (ID|opIdWrap|aopIdWrap) typeParam? parameter? typeEx ASSGIN value
     ;
 foreignDef
-    : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
+    : annotationBlock? (ID|opIdWrap|aopIdWrap) typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
     : INVERSE LPAREN inverseDefCompo+ RPAREN
     ;
 inverseDefCompo: ID typeEx ASSGIN value ;
-
-//// compiling util
-compiledId
-    : Literal
-    ;
 
 //// lambda
 lambda
