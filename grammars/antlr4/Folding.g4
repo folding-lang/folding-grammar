@@ -119,14 +119,10 @@ fieldNotInit: FIELD MUTABLE? ID typeEx ;
 fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
 def
     : justDef
-    | template
     | foreignDef
     ;
 justDef
     : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? typeEx ASSGIN value
-    ;
-template
-    : annotationBlock? TEMPLATE (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? (FOREIGN typeEx foreignBody?|ASSGIN typeEx RawString)
     ;
 foreignDef
     : annotationBlock? (ID|opIdWrap|aopIdWrap) compiledId? typeParam? parameter? FOREIGN typeEx foreignBody?
