@@ -79,15 +79,17 @@ definition
     ;
 
 //// value
-defaultValue: Integer | Double | String | Literal ;
+defaultValue: Integer | Double | String ;
 value
     : defaultValue #justDefaultValue
     | DOUBLECOLON reference #reflected
     | LPAREN ID+ FROM value RPAREN #callInvFunc
     | reference argValue? #callFuncthon
+    | SHARP reference #getFieldGlobal
+    | value SHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value DOUBLECOLON ID #reflectedMethod
-    | value SHARP ID #getField
+    | value invoking #invokeValue
     | value typeCasting #valueTypeCasting
     | OPID value #callAopFunc
     | value OPID value #callOpFunc
@@ -116,11 +118,20 @@ parameter
 
 //// argument
 argEx
-    : (ID ASSGIN)? value
-    | ID? LBRACE value* RBRACE
+    : (ID ASSGIN)? value #singleArg
+    | ID? LBRACE value* RBRACE #multiArg
     ;
 argValue
-    : LPAREN (typeEx+ TILDE)?  argEx* RPAREN
+    : LPAREN (typeEx+ TILDE)? argEx* RPAREN
+    ;
+
+//// invoke
+invokeEx
+    : value #singleInvoke
+    | LBRACE value RBRACE #multiInvoke
+    ;
+invoking
+    : LSQUARE argEx* RSQUARE #invokeValueFunc
     ;
 
 //// definition
@@ -193,11 +204,6 @@ annotation
     ;
 annotationBlock
     : LCOLONSQUARE annotation* RCOLONSQUARE
-    ;
-
-//// literal
-Literal
-    : '#' IDLETTERHEAD IDLETTERTAIL*
     ;
 
 
