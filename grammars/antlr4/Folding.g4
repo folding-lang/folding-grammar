@@ -128,7 +128,7 @@ field: fieldSetted|fieldNotInit ;
 fieldNotInit: FIELD MUTABLE? ID typeEx ;
 fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
 def
-    : justDef inverseDefining
+    : justDef inverseDefining?
     | foreignDef
     ;
 justDef
