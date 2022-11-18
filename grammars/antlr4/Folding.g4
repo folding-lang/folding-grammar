@@ -138,7 +138,7 @@ foreignDef
     : annotationBlock? (ID|opIdWrap|aopIdWrap) typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
-    : INVERSE LPAREN inverseDefCompo+ RPAREN
+    : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
     ;
 inverseDefCompo
     : typeEx value #outputParam
