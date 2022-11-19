@@ -84,7 +84,7 @@ value
     : defaultValue #justDefaultValue
     | DOUBLECOLON reference #reflected
     | LPAREN ID+ FROM value RPAREN #callInvFunc
-    | reference argValue? #callFuncthon
+    | reference argValue? #callFunction
     | SHARP reference #getFieldGlobal
     | value COLON SHARP ID #getField
     | value COLON ID argValue? #callMethod
@@ -93,7 +93,7 @@ value
     | value typeCasting #valueTypeCasting
     | OPID value #callAopFunc
     | value OPID value #callOpFunc
-    | doBlock #doExpresion
+    | doBlock #doExpression
     | lambda #justLambda
     | LPAREN value RPAREN #parenedValue
     ;
