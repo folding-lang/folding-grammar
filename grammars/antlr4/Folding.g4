@@ -139,14 +139,19 @@ field: fieldSetted|fieldNotInit ;
 fieldNotInit: FIELD MUTABLE? ID typeEx ;
 fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
 def
-    : justDef inverseDefining?
+    : justDef inverseDefining*
     | foreignDef
     ;
+defIdentifier
+    : ID #justId
+    | opIdWrap #opId
+    | aopIdWrap #aopId
+    ;
 justDef
-    : annotationBlock? (ID|opIdWrap|aopIdWrap) typeParam? parameter? typeEx ASSGIN value
+    : annotationBlock? defIdentifier typeParam? parameter? typeEx ASSGIN value
     ;
 foreignDef
-    : annotationBlock? (ID|opIdWrap|aopIdWrap) typeParam? parameter? FOREIGN typeEx foreignBody?
+    : annotationBlock? defIdentifier typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
     : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
