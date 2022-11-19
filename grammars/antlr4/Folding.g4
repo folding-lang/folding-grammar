@@ -86,7 +86,7 @@ value
     | LPAREN ID+ FROM value RPAREN #callInvFunc
     | reference argValue? #callFuncthon
     | SHARP reference #getFieldGlobal
-    | value SHARP ID #getField
+    | value COLON SHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value DOUBLECOLON ID #reflectedMethod
     | value invoking #invokeValue
@@ -131,7 +131,7 @@ invokeEx
     | LBRACE value RBRACE #multiInvoke
     ;
 invoking
-    : LSQUARE argEx* RSQUARE #invokeValueFunc
+    : LSQUARE invokeEx* RSQUARE #invokeValueFunc
     ;
 
 //// definition
