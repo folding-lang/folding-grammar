@@ -88,7 +88,7 @@ value
     | SHARP reference #getFieldGlobal
     | value COLON SHARP ID #getField
     | value COLON ID argValue? #callMethod
-    | value DOUBLECOLON ID #reflectedMethod
+    | value COLON DOUBLECOLON ID #reflectedMethod
     | value invoking #invokeValue
     | value typeCasting #valueTypeCasting
     | OPID value #callAopFunc
