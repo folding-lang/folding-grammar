@@ -295,7 +295,7 @@ String
     ;
 
 RawString
-    :   '`' RawStringCharacters '`'
+    :   '`' RawStringCharacters? '`'
     ;
 
 fragment StringCharacters
@@ -307,7 +307,7 @@ fragment RawStringCharacters
     ;
 
 fragment RawStringCharacter
-    :   .
+    :   ~[`]
     ;
 
 fragment StringCharacter
