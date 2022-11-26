@@ -42,7 +42,11 @@ class_
     : annotationBlock? CLASS ID typeParam? classBody
     ;
 classBody
-    : LBRACE (constructor_*|constructorSelf) field* defInInterface* inherit? impl* RBRACE
+    : LBRACE construct field* defInInterface* inherit? impl* RBRACE #justClass
+    | LBRACE field* defInInterface* inherit? impl* RBRACE #justInterface
+    ;
+construct
+    : constructor_+|constructorSelf
     ;
 constructor_
     : ID parameter? doBlock?
