@@ -101,9 +101,7 @@ value
     | LPAREN value RPAREN #parenedValue
     ;
 reference
-    : (package_ DOT)? ID #justRef
-    | (package_ DOT)? opIdWrap #opFuncRef
-    | (package_ DOT)? aopIdWrap #aopFuncRef
+    : (package_ DOT)? defIdentifier
     ;
 
 typeCasting: As typeEx ;
