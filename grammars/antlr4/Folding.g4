@@ -56,7 +56,7 @@ constructorSelf
     ;
 
 defInInterface
-    : annotationBlock? ID typeParam? parameter? typeEx value?
+    : annotationBlock? ID typeParam? parameter? typeEx (ASSGIN value)?
     ;
 
 //// impl
