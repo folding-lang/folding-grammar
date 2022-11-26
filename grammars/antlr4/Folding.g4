@@ -101,7 +101,7 @@ value
     | LPAREN value RPAREN #parenedValue
     ;
 reference
-    : (package_ DOT)? defIdentifier
+    : (package_ DOT)? commonIdentifier
     ;
 
 typeCasting: As typeEx ;
@@ -138,6 +138,15 @@ invoking
     : LSQUARE invokeEx* RSQUARE #invokeValueFunc
     ;
 
+//// identifier
+commonIdentifier
+    : ID #justId
+    | opIdWrap #opId
+    | aopIdWrap #aopId
+    ;
+opIdWrap: LSQUARE OPID RSQUARE ;
+aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
+
 //// definition
 field: fieldSetted|fieldNotInit ;
 fieldNotInit: FIELD MUTABLE? ID typeEx ;
@@ -146,16 +155,12 @@ def
     : justDef inverseDefining*
     | foreignDef
     ;
-defIdentifier
-    : ID #justId
-    | opIdWrap #opId
-    | aopIdWrap #aopId
-    ;
+
 justDef
-    : annotationBlock? defIdentifier typeParam? parameter? typeEx ASSGIN value
+    : annotationBlock? commonIdentifier typeParam? parameter? typeEx ASSGIN value
     ;
 foreignDef
-    : annotationBlock? defIdentifier typeParam? parameter? FOREIGN typeEx foreignBody?
+    : annotationBlock? commonIdentifier typeParam? parameter? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
     : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
@@ -169,10 +174,6 @@ inverseDefCompo
 lambda
     : LSQUARE paramEx* RSQUARE value
     ;
-
-//// id utill
-opIdWrap: LSQUARE OPID RSQUARE ;
-aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 //// typeEx
 typeEx
