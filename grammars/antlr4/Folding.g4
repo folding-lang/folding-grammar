@@ -190,7 +190,6 @@ typeExParameter
 foreignBody: LBRACE foreignElement* RBRACE | RawString ;
 foreignElement
     : foreignPlatform RawString
-    | foreignPlatform TILDE String
     ;
 foreignPlatform: ID ;
 
