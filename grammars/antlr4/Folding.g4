@@ -43,7 +43,7 @@ class_
     ;
 classBody
     : LBRACE construct field* defInInterface* inherit? impl* RBRACE #justClass
-    | LBRACE field* defInInterface* inherit? impl* RBRACE #justInterface
+    | LBRACE defInInterface* impl* RBRACE #justInterface
     ;
 construct
     : constructor_+|constructorSelf
