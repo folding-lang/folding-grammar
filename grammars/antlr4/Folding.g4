@@ -3,7 +3,10 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (definition|field|annotationDef)*
+    : namespace? importEx* (fileCompo|annotationDef)*
+    ;
+fileCompo
+    : definition|field
     ;
 
 //// import
