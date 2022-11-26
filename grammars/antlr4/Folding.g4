@@ -114,7 +114,10 @@ paramCEx
     : value TILDE typeEx
     ;
 parameter
-    : LPAREN paramEx* RPAREN (FROM LPAREN paramCEx+ RPAREN)?
+    : LPAREN paramEx* RPAREN parameterFromValue?
+    ;
+parameterFromValue
+    : FROM LPAREN paramCEx+ RPAREN
     ;
 
 //// argument
