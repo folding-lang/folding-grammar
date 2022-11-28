@@ -10,10 +10,10 @@ fileCompo
     ;
 
 //// import
-importEx
-    : importVanila
-    ;
-importVanila: IMPORT package_ ;
+importEx: package_ importBody ;
+importBody: LBRACE importCompo* RBRACE ;
+importCompo: ID SHARP importAlias ;
+importAlias: ID ;
 
 //// package
 package_
