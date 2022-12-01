@@ -90,7 +90,6 @@ defaultValue: Integer | Double | String ;
 value
     : defaultValue #justDefaultValue
     | DOUBLECOLON reference #reflected
-    | LPAREN ID+ FROM value RPAREN #callInvFunc
     | reference argValue? #callFunction
     | SHARP reference #getFieldGlobal
     | value COLON SHARP ID #getField
@@ -176,7 +175,7 @@ inverseDefCompo
 
 //// lambda
 lambda
-    : LSQUARE paramEx* RSQUARE value
+    : LSQUARE paramEx* RSQUARE parameterFromValue? value
     ;
 
 //// typeEx
