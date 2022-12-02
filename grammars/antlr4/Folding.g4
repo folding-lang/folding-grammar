@@ -89,6 +89,7 @@ definition
 defaultValue: Integer | Double | String ;
 value
     : defaultValue #justDefaultValue
+    | ARROW ID #outputOfInversing
     | DOUBLECOLON reference #reflected
     | reference argValue? #callFunction
     | SHARP reference #getFieldGlobal
