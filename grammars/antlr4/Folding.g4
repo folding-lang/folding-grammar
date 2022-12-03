@@ -144,9 +144,9 @@ invoking
 
 //// identifier
 commonIdentifier
-    : ID #justId
-    | opIdWrap #opId
-    | aopIdWrap #aopId
+    : ID
+    | opIdWrap
+    | aopIdWrap
     ;
 opIdWrap: LSQUARE OPID RSQUARE ;
 aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
