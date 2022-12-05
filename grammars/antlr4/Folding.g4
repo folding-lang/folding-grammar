@@ -130,7 +130,8 @@ argEx
     | ID? LBRACE value* RBRACE #multiArg
     ;
 argValue
-    : LPAREN (typeEx+ TILDE)? argEx* RPAREN
+    : LPAREN (typeEx+ TILDE)? argEx* RPAREN #primaryArgValue
+    | LBRACE (typeEx+ TILDE)? value* RBRACE #singleListArgValue
     ;
 
 //// invoke
