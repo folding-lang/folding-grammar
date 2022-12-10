@@ -185,7 +185,8 @@ lambda
 //// typeEx
 typeEx
     : typeExFunc
-    | typeExSingle
+    | LPAREN typeExFunc RPAREN QM
+    | typeExSingle QM?
     ;
 typeExSingle
     : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
