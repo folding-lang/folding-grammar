@@ -253,7 +253,6 @@ MUTABLE: 'mutable' ;
 FIELD: 'field' ;
 INVERSE: 'inverse' ;
 FROM: 'from' ;
-IF: 'if' ;
 
 
 //// Signs
