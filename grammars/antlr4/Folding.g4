@@ -205,21 +205,14 @@ foreignElement
 foreignPlatform: ID ;
 
 //// annotation
-annoValue
-    : Integer | Double | String
-    ;
-annoParam
-    : ID typeEx
-    ;
 annotationDef
-    : ANNOTATION ID (LPAREN annoParam* RPAREN)?
+    : ANNOTATION ID parameter
     ;
 annotation
-    : ID annoValue*
-    | ID LPAREN annoValue* RPAREN
+    : (package_ DOT)? ID argValue
     ;
 annotationBlock
-    : LCOLONSQUARE annotation* RCOLONSQUARE
+    : LSQUARE annotation* RSQUARE
     ;
 
 
@@ -265,9 +258,7 @@ DOT: '.' ;
 LPAREN: '(' ;
 RPAREN: ')' ;
 LSQUARE: '[' ;
-LCOLONSQUARE: '[:' ;
 RSQUARE: ']' ;
-RCOLONSQUARE: ':]' ;
 LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
