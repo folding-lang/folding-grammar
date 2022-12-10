@@ -10,7 +10,7 @@ fileCompo
     ;
 
 //// import
-importEx: package_ importBody ;
+importEx: package_ importBody? ;
 importBody: LBRACE importCompo* RBRACE ;
 importCompo: ID SHARP importAlias ;
 importAlias: ID ;
@@ -90,13 +90,14 @@ defaultValue: Integer | Double | String ;
 value
     : defaultValue #justDefaultValue
     | ARROW ID #outputOfInversing
-    | DOUBLECOLON reference #reflected
+    | QUOTE reference #reflected
     | reference argValue? #callFunction
     | SHARP reference #getFieldGlobal
-    | value COLON SHARP ID #getField
+    | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
-    | value COLON DOUBLECOLON ID #reflectedMethod
+    | value COLONQUOTE ID #reflectedMethod
     | value invoking #invokeValue
+    | value QM value #takeNull
     | value typeCasting #valueTypeCasting
     | OPID value #callAopFunc
     | value OPID value #callOpFunc
@@ -182,7 +183,7 @@ lambda
 
 //// typeEx
 typeEx
-    : typeExParameter
+    : typeExFunc
     | typeExSingle
     ;
 typeExSingle
@@ -191,7 +192,7 @@ typeExSingle
 typeExParamEx
     : typeEx ELLIPSIS?
     ;
-typeExParameter
+typeExFunc
     : LPAREN typeExParamEx* RPAREN ARROW typeEx
     ;
 
@@ -252,6 +253,7 @@ MUTABLE: 'mutable' ;
 FIELD: 'field' ;
 INVERSE: 'inverse' ;
 FROM: 'from' ;
+IF: 'if' ;
 
 
 //// Signs
@@ -271,8 +273,11 @@ ARROW: '->' ;
 TILDE: '~' ;
 As: '~>' ;
 COLON: ':' ;
-DOUBLECOLON: '::' ;
+COLONSHARP: ':#' ;
+QUOTE: '\'' ;
+COLONQUOTE: ':\'' ;
 SHARP: '#' ;
+QM: '?' ;
 
 //// ID
 
