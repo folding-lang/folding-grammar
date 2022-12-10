@@ -12,7 +12,7 @@ fileCompo
 //// import
 importEx: package_ importBody? ;
 importBody: LBRACE importCompo* RBRACE ;
-importCompo: ID SHARP importAlias ;
+importCompo: ID (SHARP importAlias)? ;
 importAlias: ID ;
 
 //// package
