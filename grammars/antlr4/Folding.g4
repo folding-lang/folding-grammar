@@ -97,6 +97,7 @@ value
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
     | value invoking #invokeValue
+    | value IF value #ifExpression
     | value QM value #takeNull
     | value typeCasting #valueTypeCasting
     | OPID value #callAopFunc
@@ -253,6 +254,7 @@ MUTABLE: 'mutable' ;
 FIELD: 'field' ;
 INVERSE: 'inverse' ;
 FROM: 'from' ;
+IF: 'if' ;
 
 
 //// Signs
