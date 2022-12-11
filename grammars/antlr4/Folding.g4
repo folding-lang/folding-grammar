@@ -100,8 +100,8 @@ value
     | value IF value #ifExpression
     | value QM value #takeNull
     | value typeCasting #valueTypeCasting
-    | OPID value #callAopFunc
-    | value OPID value #callOpFunc
+    | callingAopId value #callAopFunc
+    | value callingOpId value #callOpFunc
     | doBlock #doExpression
     | lambda #justLambda
     | LPAREN value RPAREN #parenedValue
@@ -153,6 +153,16 @@ commonIdentifier
     ;
 opIdWrap: LSQUARE OPID RSQUARE ;
 aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
+
+callingOpId
+    : OPID #commmonOpId
+    | (PLUS|MINUS|MULTIPLY|DIVIDE) #primitiveOpId
+    ;
+callingAopId
+    : OPID #commmonAopId
+    | (PLUS|MINUS) #primitiveAopId
+    ;
+
 
 //// definition
 field: fieldSetted|fieldNotInit ;
@@ -270,6 +280,11 @@ QUOTE: '\'' ;
 COLONQUOTE: ':\'' ;
 SHARP: '#' ;
 QM: '?' ;
+
+PLUS: '+' ;
+MINUS: '-' ;
+MULTIPLY: '*' ;
+DIVIDE: '/' ;
 
 //// ID
 
