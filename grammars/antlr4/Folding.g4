@@ -296,35 +296,15 @@ Integer: DIGITLETTER+ ;
 Double: DIGITLETTER+ '.' DIGITLETTER+ ;
 
 // string
-String
-    :   '"' StringCharacters? '"'
-    ;
+String :  '"' (ESC | ~["\\])* '"' ;
+
+fragment ESC :   '\\' (["\\/bfnrt] | UNICODE) ;
+fragment UNICODE : 'u' HEX HEX HEX HEX ;
+fragment HEX : [0-9a-fA-F] ;
 
 RawString
-    :   '`' RawStringCharacters? '`'
+    :   '`' (~[`])* '`'
     ;
-
-fragment StringCharacters
-    :   StringCharacter+
-    ;
-
-fragment RawStringCharacters
-    :   RawStringCharacter+
-    ;
-
-fragment RawStringCharacter
-    :   ~[`]
-    ;
-
-fragment StringCharacter
-    :   ~["\\\r\n]
-    |   EscapeSequence
-    ;
-
-fragment EscapeSequence
-    :   '\\' [btnfr"'\\]
-    ;
-
 
 
 
