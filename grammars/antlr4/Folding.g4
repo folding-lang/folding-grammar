@@ -121,7 +121,7 @@ paramEx
     : ID ELLIPSIS? TILDE typeEx
     ;
 paramCEx
-    : value TILDE typeEx
+    : specificAlias? value TILDE typeEx
     ;
 parameter
     : LPAREN paramEx* RPAREN parameterFromValue?
@@ -129,6 +129,7 @@ parameter
 parameterFromValue
     : FROM LPAREN paramCEx+ RPAREN
     ;
+specificAlias: LPAREN ID TILDE RPAREN ;
 
 //// argument
 argEx
