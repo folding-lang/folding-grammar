@@ -10,10 +10,14 @@ fileCompo
     ;
 
 //// import
-importEx: package_ importBody? ;
+importEx
+    : IMPORT package_ importPath? importBody?
+    ;
 importBody: LBRACE importCompo* RBRACE ;
-importCompo: ID (SHARP importAlias)? ;
+importCompo: ID (SHARP importAlias)? (As importType)? ;
 importAlias: ID ;
+importType: typeEx;
+importPath: RawString;
 
 //// package
 package_
