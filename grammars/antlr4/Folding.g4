@@ -93,15 +93,17 @@ definition
 defaultValue: Integer | Double | String ;
 value
     : defaultValue #justDefaultValue
+    | NULL #null
     | ARROW ID #outputOfInversing
     | QUOTE reference #reflected
     | reference argValue? #callFunction
+    | NEW reference argValue? #useForeignClass
     | SHARP reference #getFieldGlobal
     | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
     | value invoking #invokeValue
-    | value IF value #ifExpression
+    | if_else #ifExpression
     | value QM value #takeNull
     | value typeCasting #valueTypeCasting
     | callingAopId value #callAopFunc
@@ -115,6 +117,11 @@ reference
     ;
 
 typeCasting: As typeEx ;
+
+if_else
+    : IF LPAREN value RPAREN value ELSE value #directJudge
+    | IF LPAREN value (ARROW ID)? COLON value RPAREN value ELSE value #bindingJudge
+    ;
 
 //// parameter
 paramEx
@@ -204,6 +211,11 @@ typeEx
     ;
 typeExSingle
     : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
+    | primitiveType
+    ;
+
+primitiveType
+    : INT|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN
     ;
 typeExParamEx
     : typeEx ELLIPSIS?
@@ -263,7 +275,20 @@ FIELD: 'field' ;
 INVERSE: 'inverse' ;
 FROM: 'from' ;
 IF: 'if' ;
+ELSE: 'else' ;
+NEW: 'new' ;
 
+// primitive type
+INT: 'Int' ;
+DOUBLE: 'Double' ;
+FLOAT: 'Float' ;
+BYTE: 'Byte' ;
+CHAR: 'Char' ;
+STRING: 'String' ;
+BOOLEAN: 'Boolean' ;
+
+// primitive value
+NULL: 'null' ;
 
 //// Signs
 
