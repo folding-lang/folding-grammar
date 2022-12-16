@@ -120,7 +120,7 @@ typeCasting: As typeEx ;
 
 if_else
     : IF LPAREN value RPAREN value ELSE value #directJudge
-    | IF LPAREN value (ARROW ID)? COLON value RPAREN value ELSE value #bindingJudge
+    | IF LPAREN value (SHARP ID)? ARROW value RPAREN value ELSE value #bindingJudge
     ;
 
 //// parameter
