@@ -103,8 +103,9 @@ value
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
     | value invoking #invokeValue
-    | if_else #ifExpression
+    | value IF value #simpleIf
     | value QM value #takeNull
+    | if_else #ifExpression
     | value typeCasting #valueTypeCasting
     | callingAopId value #callAopFunc
     | value callingOpId value #callOpFunc
