@@ -102,7 +102,7 @@ value
     | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
-    | value QUOTE argValue #invokeValue
+    | value invoking #invokeValue
     | value IF value #simpleIf
     | value QM value #takeNull
     | if_else #ifExpression
@@ -147,6 +147,9 @@ argEx
 argValue
     : LPAREN (typeEx+ TILDE)? argEx* RPAREN #primaryArgValue
     | LBRACE (typeEx+ TILDE)? value* RBRACE #singleListArgValue
+    ;
+invoking
+    : LSQUARE value* RSQUARE
     ;
 
 //// identifier
