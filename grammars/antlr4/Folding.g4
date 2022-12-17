@@ -202,7 +202,13 @@ inverseDefCompo
 
 //// lambda
 lambda
-    : LSQUARE paramEx* RSQUARE parameterFromValue? value
+    : LSQUARE parameterForLambda RSQUARE value
+    ;
+parameterForLambda
+    : paramEx* parameterFromValueForLambda?
+    ;
+parameterFromValueForLambda
+    : FROM paramCEx+
     ;
 
 //// typeEx
