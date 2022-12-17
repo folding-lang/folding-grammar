@@ -38,7 +38,8 @@ returning
     : RETURN value
     ;
 fieldAssign
-    : value ASSGIN value
+    : SHARP ID ASSGIN value #globalFieldAssign
+    | value COLONSHARP ID ASSGIN value #objectFieldAssign
     ;
 
 //// class
