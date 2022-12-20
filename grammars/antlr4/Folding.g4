@@ -150,7 +150,7 @@ argValue
     | LBRACE (typeEx+ TILDE)? value* RBRACE #singleListArgValue
     ;
 invoking
-    : LSQUARE value* RSQUARE
+    : COLON LPAREN value* RPAREN
     ;
 
 //// identifier
