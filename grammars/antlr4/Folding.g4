@@ -46,7 +46,7 @@ fieldAssign
 class_
     : annotationBlock? CLASS ID typeParam? LBRACE (defInInterface|def)* impl* RBRACE #justInterface
     | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf field* def* inherit? impl* RBRACE #justClass
-    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf field* (defInInterface|def)* inherit? impl* RBRACE #justAbstractClass
+    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf? field* (defInInterface|def)* inherit? impl* RBRACE #justAbstractClass
     | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ field* (defInInterface|def)* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_
