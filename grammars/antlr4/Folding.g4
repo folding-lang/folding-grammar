@@ -167,8 +167,8 @@ callingAopId
 
 //// definition
 field: fieldSetted|fieldNotInit ;
-fieldNotInit: FIELD MUTABLE? ID typeEx ;
-fieldSetted: FIELD MUTABLE? ID typeEx? ASSGIN value ;
+fieldNotInit: MUTABLE? SHARP ID typeEx ;
+fieldSetted: MUTABLE? SHARP ID typeEx? ASSGIN value ;
 def
     : justDef inverseDefining*
     | foreignDef
@@ -266,7 +266,6 @@ IMPL: 'impl' ;
 INHERIT: 'inherit' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
-FIELD: 'field' ;
 INVERSE: 'inverse' ;
 FROM: 'from' ;
 IF: 'if' ;
