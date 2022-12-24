@@ -47,8 +47,8 @@ class_
     : annotationBlock? CLASS ID typeParam? classBody
     ;
 classBody
-    : LBRACE construct field* defInInterface* inherit? impl* RBRACE #justClass
-    | LBRACE defInInterface* impl* RBRACE #justInterface
+    : LBRACE construct field* defInInterface* inherit? impl* RBRACE
+    | LBRACE defInInterface* impl* RBRACE
     ;
 construct
     : constructor_+|constructorSelf
@@ -66,10 +66,10 @@ defInInterface
 
 //// impl
 inherit
-    : INHERIT typeParam? typeEx implBody?
+    : INHERIT impl
     ;
 impl
-    : IMPL typeParam? typeEx implBody?
+    : IMPL typeEx implBody?
     ;
 implBody
     : LBRACE defInImpl* RBRACE
