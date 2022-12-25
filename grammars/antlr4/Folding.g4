@@ -6,7 +6,8 @@ file
     : namespace? importEx* (fileCompo|annotationDef)*
     ;
 fileCompo
-    : definition|field
+    : definition
+    | SHARP field
     ;
 
 //// import
@@ -44,16 +45,16 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? CLASS ID typeParam? LBRACE (defInInterface|def)* impl* RBRACE #justInterface
-    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf field* def* inherit? impl* RBRACE #justClass
-    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf? field* (defInInterface|def)* inherit? impl* RBRACE #justAbstractClass
-    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ field* (defInInterface|def)* inherit? impl* RBRACE #justMultiClass
+    : annotationBlock? CLASS ID typeParam? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
+    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
+    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
+    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_
-    : ID parameter? COLON doBlock?
+    : ID parameter? doBlock?
     ;
 constructorSelf
-    : parameter? COLON doBlock?
+    : parameter? doBlock?
     ;
 
 defInInterface
@@ -68,7 +69,7 @@ impl
     : IMPL typeEx implBody?
     ;
 implBody
-    : LBRACE def* RBRACE
+    : LBRACE (COLON def)* RBRACE
     ;
 
 //// type
@@ -167,8 +168,8 @@ callingAopId
 
 //// definition
 field: fieldSetted|fieldNotInit ;
-fieldNotInit: MUTABLE? SHARP ID typeEx ;
-fieldSetted: MUTABLE? SHARP ID typeEx? ASSGIN value ;
+fieldNotInit: ID (LPAREN MUTABLE RPAREN)? typeEx ;
+fieldSetted: ID (LPAREN MUTABLE RPAREN)? typeEx? ASSGIN value ;
 def
     : justDef inverseDefining*
     | foreignDef
