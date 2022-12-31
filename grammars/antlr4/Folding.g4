@@ -215,7 +215,7 @@ typeExSingle
     ;
 
 primitiveType
-    : INT|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN
+    : INT|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN|UNIT
     ;
 typeExParamEx
     : typeEx ELLIPSIS?
