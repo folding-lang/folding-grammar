@@ -15,7 +15,11 @@ importEx
     : IMPORT package_ importPath? importBody?
     ;
 importBody: LBRACE importCompo* RBRACE ;
-importCompo: CLASS? ID (SHARP importAlias)? (As importType)? ;
+importCompo
+    : ID (SHARP importAlias)? (As importType)?
+    | CLASS ID (SHARP importAlias)?
+    | CLASS QUOTE ID QUOTE (SHARP importAlias)?
+    ;
 importAlias: ID ;
 importType: typeEx;
 importPath: RawString;
