@@ -15,7 +15,7 @@ importEx
     : IMPORT package_ importPath? importBody?
     ;
 importBody: LBRACE importCompo* RBRACE ;
-importCompo: ID (SHARP importAlias)? (As importType)? ;
+importCompo: CLASS? ID (SHARP importAlias)? (As importType)? ;
 importAlias: ID ;
 importType: typeEx;
 importPath: RawString;
@@ -206,7 +206,7 @@ typeEx
     | QM? typeExSingle
     ;
 typeExSingle
-    : (package_ DOT)? ID (LPAREN typeEx+ RPAREN)?
+    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN typeEx+ RPAREN)?
     | primitiveType
     ;
 
@@ -281,6 +281,7 @@ BYTE: 'Byte' ;
 CHAR: 'Char' ;
 STRING: 'String' ;
 BOOLEAN: 'Boolean' ;
+UNIT: 'Unit' ;
 
 // primitive value
 NULL: 'null' ;
