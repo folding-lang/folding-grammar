@@ -89,7 +89,8 @@ definition
     ;
 
 //// value
-defaultValue: Integer | Double | String ;
+defaultValue: Integer | Double | String | boolean ;
+boolean: TRUE | FALSE ;
 value
     : defaultValue #justDefaultValue
     | NULL #null
@@ -277,6 +278,8 @@ FROM: 'from' ;
 IF: 'if' ;
 ELSE: 'else' ;
 NEW: 'new' ;
+TRUE: 'true' ;
+FALSE: 'false' ;
 
 // primitive type
 INT: 'Int' ;
