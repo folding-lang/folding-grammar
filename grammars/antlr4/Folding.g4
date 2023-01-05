@@ -67,7 +67,7 @@ defInInterface
 
 //// impl
 inherit
-    : INHERIT impl
+    : INHERIT argValue? impl
     ;
 impl
     : IMPL typeEx implBody?
