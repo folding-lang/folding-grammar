@@ -163,12 +163,10 @@ opIdWrap: LSQUARE OPID RSQUARE ;
 aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 callingOpId
-    : OPID #commonOpId
-    | (PLUS|MINUS|MULTIPLY|DIVIDE) #primitiveOpId
+    : OPID
     ;
 callingAopId
     : OPID #commonAopId
-    | (PLUS|MINUS) #primitiveAopId
     ;
 
 
@@ -314,11 +312,6 @@ QUOTE: '\'' ;
 COLONQUOTE: ':\'' ;
 SHARP: '#' ;
 QM: '?' ;
-
-PLUS: '+' ;
-MINUS: '-' ;
-MULTIPLY: '*' ;
-DIVIDE: '/' ;
 
 //// ID
 
