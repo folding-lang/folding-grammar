@@ -215,7 +215,7 @@ typeExSingle
     ;
 
 primitiveType
-    : INT|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN|UNIT
+    : INT|LONG|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN|UNIT
     ;
 typeExParamEx
     : typeEx ELLIPSIS?
@@ -281,6 +281,7 @@ FALSE: 'false' ;
 
 // primitive type
 INT: 'Int' ;
+LONG: 'Long' ;
 DOUBLE: 'Double' ;
 FLOAT: 'Float' ;
 BYTE: 'Byte' ;
