@@ -176,7 +176,7 @@ fieldNotInit: ID (LPAREN MUTABLE RPAREN)? typeEx ;
 fieldSetted: ID (LPAREN MUTABLE RPAREN)? typeEx? ASSGIN value ;
 def
     : justDef inverseDefining*
-    | foreignDef
+    | foreignDef inverseDefining*
     ;
 
 justDef
