@@ -236,7 +236,7 @@ annotationDef
     : ANNOTATION ID parameter
     ;
 annotation
-    : (package_ DOT)? ID argValue
+    : (package_ DOT)? ID argValue?
     ;
 annotationBlock
     : LSQUARE annotation* RSQUARE
