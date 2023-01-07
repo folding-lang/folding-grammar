@@ -133,7 +133,7 @@ paramCEx
     : specificAlias? value TILDE typeEx
     ;
 parameter
-    : LPAREN paramEx* RPAREN parameterFromValue?
+    : LPAREN paramEx+ RPAREN parameterFromValue?
     ;
 parameterFromValue
     : FROM LPAREN paramCEx+ RPAREN
