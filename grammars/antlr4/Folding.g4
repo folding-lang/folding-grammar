@@ -190,7 +190,7 @@ inverseDefining
     ;
 inverseDefCompo
     : value (TILDE typeEx)? #outputParam
-    | ARROW ID #necessaryParam
+    | As ID #necessaryParam
     ;
 
 //// lambda
