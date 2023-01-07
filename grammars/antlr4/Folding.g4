@@ -52,7 +52,7 @@ class_
     : annotationBlock? CLASS ID typeParam? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
     | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
     | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
-    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
+//    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_
     : ID parameter? doBlock?
