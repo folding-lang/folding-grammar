@@ -189,8 +189,8 @@ inverseDefining
     : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
     ;
 inverseDefCompo
-    : typeEx value #outputParam
-    | As ID #necessaryParam
+    : value (TILDE typeEx)? #outputParam
+    | ARROW ID #necessaryParam
     ;
 
 //// lambda
