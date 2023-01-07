@@ -322,7 +322,7 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   [-<>#$.~|+=*&%^@!?/\\;,]  ;
+    :   [-<>$.~|+=*&%^@!?/\\;,]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
