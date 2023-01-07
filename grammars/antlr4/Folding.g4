@@ -118,7 +118,7 @@ reference
     : (package_ DOT)? commonIdentifier
     ;
 
-typeCasting: As typeEx ;
+typeCasting: LPAREN TILDE typeEx RPAREN ;
 
 if_else
     : IF LPAREN value RPAREN value ELSE value #directJudge
@@ -138,7 +138,7 @@ parameter
 parameterFromValue
     : FROM LPAREN paramCEx+ RPAREN
     ;
-specificAlias: LPAREN ID TILDE RPAREN ;
+specificAlias: LPAREN ID ASSGIN RPAREN ;
 
 //// argument
 argEx
