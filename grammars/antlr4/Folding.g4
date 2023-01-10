@@ -12,7 +12,7 @@ fileCompo
 
 //// import
 importEx
-    : IMPORT package_ importPath? importBody?
+    : IMPORT package_ importNest? importPath? importBody?
     ;
 importBody: LBRACE importCompo* RBRACE ;
 importCompo
@@ -22,7 +22,8 @@ importCompo
     ;
 importAlias: ID ;
 importType: typeEx;
-importPath: RawString;
+importPath: LPAREN FROM RawString RPAREN;
+importNest: SHARP ID;
 
 //// package
 package_
