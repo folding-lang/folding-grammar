@@ -95,22 +95,23 @@ boolean: TRUE | FALSE ;
 value
     : defaultValue #justDefaultValue
     | NULL #null
-    | ARROW ID #outputOfInversing
+    | ARROW (ID|QM) #outputOfInversing
     | QUOTE reference #reflected
     | reference argValue? #callFunction
     | NEW reference argValue? #useForeignClass
     | SHARP reference #getFieldGlobal
     | LSQUARE (COLONSHARP field)* (COLON def)* inherit? impl* RSQUARE #anonymousClassObject
+    | value typeCasting #valueTypeCasting
     | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
     | value invoking #invokeValue
     | value IF value #simpleIf
     | value QM value #takeNull
-    | if_else #ifExpression
-    | value typeCasting #valueTypeCasting
     | callingAopId value #callAopFunc
     | value callingOpId value #callOpFunc
+    | if_else #ifExpression
+    | let_binding #letExpression
     | doBlock #doExpression
     | lambda #justLambda
     | LPAREN value RPAREN #parenedValue
@@ -122,8 +123,10 @@ reference
 typeCasting: LPAREN TILDE typeEx RPAREN ;
 
 if_else
-    : IF LPAREN value RPAREN value ELSE value #directJudge
-    | IF LPAREN value (SHARP ID)? ARROW value RPAREN value ELSE value #bindingJudge
+    : IF LPAREN value RPAREN value ELSE value
+    ;
+let_binding
+    : LET value ASSGIN value value
     ;
 
 //// parameter
@@ -277,8 +280,7 @@ FROM: 'from' ;
 IF: 'if' ;
 ELSE: 'else' ;
 NEW: 'new' ;
-TRUE: 'true' ;
-FALSE: 'false' ;
+LET: 'let' ;
 
 // primitive type
 INT: 'Int' ;
@@ -293,6 +295,8 @@ UNIT: 'Unit' ;
 
 // primitive value
 NULL: 'null' ;
+TRUE: 'true' ;
+FALSE: 'false' ;
 
 //// Signs
 
