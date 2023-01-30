@@ -100,7 +100,7 @@ value
     | reference argValue? #callFunction
     | NEW reference argValue? #useForeignClass
     | SHARP reference #getFieldGlobal
-    | LSQUARE (COLONSHARP field)* (COLON def)* inherit? impl* RSQUARE #anonymousClassObject
+    | NEW LBRACE (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #anonymousClassObject
     | value typeCasting #valueTypeCasting
     | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
