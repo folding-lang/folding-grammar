@@ -3,7 +3,7 @@ grammar Folding;
 ////// Parser //////
 
 file
-    : namespace? importEx* (fileCompo|annotationDef)*
+    : namespace? importEx* (fileCompo|annotationDef|typeAlias)*
     ;
 fileCompo
     : definition
@@ -50,9 +50,9 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? CLASS ID typeParam? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
-    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
-    | annotationBlock? CLASS ID typeParam? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
+    : annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
+    | annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
+    | annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_
@@ -237,6 +237,14 @@ foreignElement
     ;
 foreignPlatform: ID ;
 
+//// type alias
+typeAlias
+    : TYPEALIAS ID (LPAREN typeParamCompo RPAREN)?
+        ( ASSGIN typeEx
+        | FOREIGN foreignBody
+        )
+    ;
+
 //// annotation
 annotationDef
     : ANNOTATION ID parameter
@@ -283,6 +291,7 @@ IF: 'if' ;
 ELSE: 'else' ;
 NEW: 'new' ;
 LET: 'let' ;
+TYPEALIAS: 'typealias' ;
 
 // primitive type
 INT: 'Int' ;
