@@ -239,7 +239,7 @@ foreignPlatform: ID ;
 
 //// type alias
 typeAlias
-    : TYPEALIAS ID (LPAREN typeParamCompo RPAREN)?
+    : TYPEALIAS ID (LPAREN typeParam RPAREN)?
         ( ASSGIN typeEx
         | FOREIGN foreignBody
         )
