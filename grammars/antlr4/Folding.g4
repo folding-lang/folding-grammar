@@ -105,6 +105,7 @@ value
     | value COLONSHARP ID #getField
     | value COLON ID argValue? #callMethod
     | value COLONQUOTE ID #reflectedMethod
+    | value DOUBLECOLON ID argValue? #callMethod
     | value invoking #invokeValue
     | value IF value #simpleIf
     | value QM value #takeNull
@@ -313,6 +314,7 @@ ARROW: '->' ;
 TILDE: '~' ;
 As: '~>' ;
 COLON: ':' ;
+DOUBLECOLON: '::' ;
 COLONSHARP: ':#' ;
 QUOTE: '\'' ;
 COLONQUOTE: ':\'' ;
