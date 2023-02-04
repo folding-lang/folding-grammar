@@ -221,6 +221,7 @@ typeExSingle
 
 primitiveType
     : INT|LONG|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN|UNIT
+    | ARRAY LPAREN typeEx RPAREN
     ;
 typeExParamEx
     : typeEx ELLIPSIS?
@@ -293,6 +294,8 @@ CHAR: 'Char' ;
 STRING: 'String' ;
 BOOLEAN: 'Boolean' ;
 UNIT: 'Unit' ;
+
+ARRAY: 'Array' ;
 
 // primitive value
 NULL: 'null' ;
