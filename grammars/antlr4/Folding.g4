@@ -241,7 +241,7 @@ foreignPlatform: ID ;
 typeAlias
     : TYPEALIAS ID (LPAREN typeParam RPAREN)?
         ( ASSGIN typeEx
-        | FOREIGN foreignBody
+        | FOREIGN foreignBody?
         )
     ;
 
