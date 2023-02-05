@@ -95,7 +95,7 @@ boolean: TRUE | FALSE ;
 value
     : defaultValue #justDefaultValue
     | NULL #null
-    | ARROW (ID|QM) #outputOfInversing
+    | (ARROW (ID|QM) | ARROWQM) #outputOfInversing
     | QUOTE reference #reflected
     | reference argValue? #callFunction
     | NEW reference argValue? #useForeignClass
@@ -323,6 +323,7 @@ RSQUARE: ']' ;
 LBRACE: '{' ;
 RBRACE: '}' ;
 ARROW: '->' ;
+ARROWQM: '->?' ;
 TILDE: '~' ;
 As: '~>' ;
 COLON: ':' ;
