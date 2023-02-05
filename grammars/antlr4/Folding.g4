@@ -221,7 +221,6 @@ typeExSingle
 
 primitiveType
     : INT|LONG|CHAR|STRING|BYTE|FLOAT|DOUBLE|BOOLEAN|UNIT
-    | ARRAY LPAREN typeEx RPAREN
     ;
 typeExParamEx
     : typeEx ELLIPSIS?
@@ -241,8 +240,11 @@ foreignPlatform: ID ;
 typeAlias
     : TYPEALIAS ID (LPAREN typeParam RPAREN)?
         ( ASSGIN typeEx
-        | FOREIGN foreignBody?
+        | FOREIGN foreignBody? foreignTypeExpectitive?
         )
+    ;
+foreignTypeExpectitive
+    : EXPECT LBRACE (COLON defInInterface)* impl* RBRACE
     ;
 
 //// annotation
@@ -286,6 +288,7 @@ INHERIT: 'inherit' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
 INVERSE: 'inverse' ;
+EXPECT: 'expect' ;
 FROM: 'from' ;
 IF: 'if' ;
 ELSE: 'else' ;
@@ -303,8 +306,6 @@ CHAR: 'Char' ;
 STRING: 'String' ;
 BOOLEAN: 'Boolean' ;
 UNIT: 'Unit' ;
-
-ARRAY: 'Array' ;
 
 // primitive value
 NULL: 'null' ;
