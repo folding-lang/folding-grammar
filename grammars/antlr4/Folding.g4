@@ -151,8 +151,8 @@ argEx
     | (ID ELLIPSIS)? LBRACE value* RBRACE #multiArg
     ;
 argValue
-    : LPAREN (typeEx+ TILDE)? argEx* RPAREN #primaryArgValue
-    | LBRACE (typeEx+ TILDE)? value* RBRACE #singleListArgValue
+    : (ALPHA typeEx+)? LPAREN argEx* RPAREN #primaryArgValue
+    | (ALPHA typeEx+)? LBRACE value* RBRACE #singleListArgValue
     ;
 invoking
     : COLON LPAREN value* RPAREN
@@ -314,6 +314,7 @@ FALSE: 'false' ;
 
 //// Signs
 
+ALPHA: '@' ;
 ASSGIN: '=' ;
 ELLIPSIS: '...' ;
 DOT: '.' ;
