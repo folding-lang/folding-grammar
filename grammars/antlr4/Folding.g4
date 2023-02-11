@@ -50,9 +50,9 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
-    | annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
-    | annotationBlock? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
+    : annotationBlock? ABSTRACT? INTERFACE? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
+    | annotationBlock? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
+    | annotationBlock? ABSTRACT? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_
@@ -276,6 +276,7 @@ LINE_COMMENT
 
 //// Keywards
 
+ABSTRACT: 'abstract' ;
 ANNOTATION: 'annotation' ;
 CLASS: 'class' ;
 DO: 'do' ;
@@ -287,6 +288,8 @@ IMPL: 'impl' ;
 INHERIT: 'inherit' ;
 RETURN: 'return' ;
 MUTABLE: 'mutable' ;
+INTERFACE: 'interface' ;
+DATA: 'data' ;
 INVERSE: 'inverse' ;
 EXPECT: 'expect' ;
 FROM: 'from' ;
