@@ -50,7 +50,7 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? ABSTRACT? INTERFACE? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLON (defInInterface|def))* impl* RBRACE #justInterface
+    : annotationBlock? ABSTRACT? INTERFACE? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* impl* RBRACE #justInterface
     | annotationBlock? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
     | annotationBlock? ABSTRACT? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
@@ -65,6 +65,9 @@ constructorSelf
 defInInterface
     : annotationBlock? commonIdentifier typeParam? parameter? typeEx
     ;
+fieldInInterface
+    : (LPAREN ABSTRACT RPAREN) fieldNotInit
+    ;
 
 //// impl
 inherit
@@ -74,7 +77,7 @@ impl
     : IMPL typeEx implBody?
     ;
 implBody
-    : LBRACE (COLON def)* RBRACE
+    : LBRACE (COLONSHARP field)* (COLON def)* RBRACE
     ;
 
 //// type
@@ -177,8 +180,8 @@ callingAopId
 
 //// definition
 field: fieldSetted|fieldNotInit ;
-fieldNotInit: ID (LPAREN MUTABLE RPAREN)? typeEx ;
-fieldSetted: ID (LPAREN MUTABLE RPAREN)? typeEx? ASSGIN value ;
+fieldNotInit: (LPAREN MUTABLE RPAREN)? ID typeEx ;
+fieldSetted: (LPAREN MUTABLE RPAREN)? ID typeEx? ASSGIN value ;
 def
     : justDef inverseDefining*
     | foreignDef inverseDefining*
