@@ -214,8 +214,8 @@ parameterFromValueForLambda
 
 //// typeEx
 typeEx
-    : QM? typeExFunc
-    | QM? typeExSingle
+    : LPAREN typeExFunc RPAREN QM?
+    | typeExSingle QM?
     ;
 typeExSingle
     : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN typeEx+ RPAREN)?
