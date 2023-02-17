@@ -150,7 +150,7 @@ specificAlias: LPAREN ID ASSGIN RPAREN ;
 
 //// argument
 argEx
-    : (ID ASSGIN)? value #singleArg
+    : (ID ASSGIN)? ELLIPSIS? value #singleArg
     | (ID ELLIPSIS)? LBRACE value* RBRACE #multiArg
     ;
 argValue
