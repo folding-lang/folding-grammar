@@ -218,13 +218,14 @@ typeEx
     | typeExSingle QM?
     ;
 typeExSingle
-    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN
-        (typeEx
-        |typeExCovariant
-        |typeExContravariant
-        |typeExWildcard
-        )+ RPAREN)?
+    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN typeArgEx+ RPAREN)?
     | primitiveType
+    ;
+typeArgEx
+    : typeEx
+    | typeExCovariant
+    | typeExContravariant
+    | typeExWildcard
     ;
 
 primitiveType
