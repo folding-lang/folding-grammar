@@ -214,11 +214,16 @@ parameterFromValueForLambda
 
 //// typeEx
 typeEx
-    : LPAREN typeExFunc RPAREN QM?
+    : (typeExFunc|LPAREN typeExFunc RPAREN QM?)
     | typeExSingle QM?
     ;
 typeExSingle
-    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN typeEx+ RPAREN)?
+    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN
+        (typeEx
+        |typeExCovariant
+        |typeExContravariant
+        |typeExWildcard
+        )+ RPAREN)?
     | primitiveType
     ;
 
@@ -230,6 +235,16 @@ typeExParamEx
     ;
 typeExFunc
     : LPAREN typeExParamEx* RPAREN ARROW typeEx
+    ;
+
+typeExCovariant
+    : LSQUARE TILDE typeEx RSQUARE
+    ;
+typeExContravariant
+    : LSQUARE typeEx TILDE RSQUARE
+    ;
+typeExWildcard
+    : LSQUARE QM RSQUARE
     ;
 
 //// foreign
