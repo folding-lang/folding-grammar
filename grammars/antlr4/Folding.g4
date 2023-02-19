@@ -141,10 +141,10 @@ paramCEx
     : specificAlias? value TILDE typeEx
     ;
 parameter
-    : LPAREN paramEx+ RPAREN parameterFromValue?
+    : LPAREN paramEx+ parameterFromValue? RPAREN
     ;
 parameterFromValue
-    : FROM LPAREN paramCEx+ RPAREN
+    : FROM paramCEx+
     ;
 specificAlias: LPAREN ID ASSGIN RPAREN ;
 
@@ -311,7 +311,7 @@ INTERFACE: 'interface' ;
 DATA: 'data' ;
 INVERSE: 'inverse' ;
 EXPECT: 'expect' ;
-FROM: 'from' ;
+FROM: 'from!' ;
 IF: 'if' ;
 ELSE: 'else' ;
 NEW: 'new' ;
