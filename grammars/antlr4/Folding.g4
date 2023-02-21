@@ -112,8 +112,10 @@ value
     | value invoking #invokeValue
     | value IF value #simpleIf
     | value QM value #takeNull
-    | callingAopId value #callAopFunc
+    | value QUOTE callingAopId #callAopFuncBack
+    | TILDE? callingAopId value #callAopFunc
     | value callingOpId value #callOpFunc
+    | value IS typeEx #typeCheck
     | if_else #ifExpression
     | let_binding #letExpression
     | doBlock #doExpression
@@ -311,12 +313,15 @@ INTERFACE: 'interface' ;
 DATA: 'data' ;
 INVERSE: 'inverse' ;
 EXPECT: 'expect' ;
-FROM: 'from!' ;
 IF: 'if' ;
 ELSE: 'else' ;
 NEW: 'new' ;
 LET: 'let' ;
 TYPEALIAS: 'typealias' ;
+
+// sugar keywords
+FROM: 'from!' ;
+IS: 'is!' ;
 
 // primitive type
 INT: 'Int' ;
