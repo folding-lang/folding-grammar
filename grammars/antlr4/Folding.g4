@@ -110,12 +110,12 @@ value
     | value COLONQUOTE ID #reflectedMethod
     | value DOUBLECOLON ID argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
-    | value IF value #simpleIf
-    | value QM value #takeNull
     | value QUOTE callingAopId #callAopFuncBack
     | TILDE? callingAopId value #callAopFunc
     | value callingOpId value #callOpFunc
     | value IS typeEx #typeCheck
+    | value IF value #simpleIf
+    | value QM value #takeNull
     | if_else #ifExpression
     | let_binding #letExpression
     | doBlock #doExpression
