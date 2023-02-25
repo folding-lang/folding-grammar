@@ -110,9 +110,9 @@ value
     | value COLONQUOTE ID #reflectedMethod
     | value DOUBLECOLON ID argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
-    | value QUOTE callingAopId #callAopFuncBack
-    | TILDE? callingAopId value #callAopFunc
-    | value callingOpId value #callOpFunc
+    | value QUOTE OPID #callAopFuncBack
+    | TILDE? OPID value #callAopFunc
+    | value OPID value #callOpFunc
     | value IS typeEx #typeCheck
     | value IF value #simpleIf
     | value QM value #takeNull
@@ -172,12 +172,6 @@ commonIdentifier
 opIdWrap: LSQUARE OPID RSQUARE ;
 aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
-callingOpId
-    : OPID
-    ;
-callingAopId
-    : OPID #commonAopId
-    ;
 
 
 //// definition
