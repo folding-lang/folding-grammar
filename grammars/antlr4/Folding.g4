@@ -180,8 +180,8 @@ fieldNotInit: (LPAREN MUTABLE RPAREN)? ID typeEx ;
 fieldSetted: (LPAREN MUTABLE RPAREN)? ID typeEx? ASSGIN value ;
 foreignField
     : LPAREN FOREIGN RPAREN ID typeEx
-        (GET gettingValue=value)?
-        (SET settingValue=value)?
+        (GET ASSGIN gettingValue=value)?
+        (SET inputID=ID ASSGIN settingValue=value)?
     ;
 
 
