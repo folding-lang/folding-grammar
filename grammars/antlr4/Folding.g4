@@ -55,7 +55,7 @@ class_
     | annotationBlock? ABSTRACT? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
-constructor_
+constructor_ // Deprecated
     : ID parameter? doBlock?
     ;
 constructorSelf
@@ -175,9 +175,17 @@ aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
 
 //// definition
-field: fieldSetted|fieldNotInit ;
+field: fieldSetted|fieldNotInit|foreignField ;
 fieldNotInit: (LPAREN MUTABLE RPAREN)? ID typeEx ;
 fieldSetted: (LPAREN MUTABLE RPAREN)? ID typeEx? ASSGIN value ;
+foreignField
+    : LPAREN FOREIGN RPAREN ID typeEx
+        (GET gettingValue=value)?
+        (SET settingValue=value)?
+    ;
+
+
+
 def
     : justDef inverseDefining*
     | foreignDef inverseDefining*
@@ -313,9 +321,11 @@ NEW: 'new' ;
 LET: 'let' ;
 TYPEALIAS: 'typealias' ;
 
-// sugar keywords
+// extra keywords
 FROM: 'from!' ;
 IS: 'is!' ;
+GET: 'get!' ;
+SET: 'set!' ;
 
 // primitive type
 INT: 'Int' ;
