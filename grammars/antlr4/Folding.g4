@@ -38,7 +38,10 @@ doBlock
     : DO LBRACE compo* RBRACE
     ;
 compo
-    : fieldAssign|value|returning
+    : fieldAssign|remainLet_binding|value|returning
+    ;
+remainLet_binding
+    : REMAIN let_binding
     ;
 returning
     : RETURN value
@@ -326,6 +329,7 @@ FROM: 'from!' ;
 IS: 'is!' ;
 GET: 'get!' ;
 SET: 'set!' ;
+REMAIN: 'remain!' ;
 
 // primitive type
 INT: 'Int' ;
