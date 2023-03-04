@@ -113,6 +113,7 @@ value
     | value COLONQUOTE ID #reflectedMethod
     | value DOUBLECOLON ID argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
+    | value TRIPLECOLON value invoking? #invokeValueLikeMethod
     | value QUOTE OPID #callAopFuncBack
     | TILDE? OPID value #callAopFunc
     | value OPID value #callOpFunc
@@ -120,6 +121,7 @@ value
     | value IF value #simpleIf
     | value QM value #takeNull
     | if_else #ifExpression
+    | patternMatch #patternMatchExpression
     | let_binding #letExpression
     | doBlock #doExpression
     | lambda #justLambda
@@ -136,6 +138,13 @@ if_else
     ;
 let_binding
     : LET value ASSGIN value value
+    ;
+
+patternMatch
+    : MATCH patternMatchCompo+
+    ;
+patternMatchCompo
+    : patternValue=value (WHERE predicateValue=value)? ARROW outputValue=value
     ;
 
 //// parameter
@@ -323,6 +332,7 @@ ELSE: 'else' ;
 NEW: 'new' ;
 LET: 'let' ;
 TYPEALIAS: 'typealias' ;
+WHERE: 'where' ;
 
 // extra keywords
 FROM: 'from!' ;
@@ -330,6 +340,7 @@ IS: 'is!' ;
 GET: 'get!' ;
 SET: 'set!' ;
 REMAIN: 'remain!' ;
+MATCH: 'match!' ;
 
 // primitive type
 INT: 'Int' ;
@@ -365,6 +376,7 @@ TILDE: '~' ;
 As: '~>' ;
 COLON: ':' ;
 DOUBLECOLON: '::' ;
+TRIPLECOLON: ':::' ;
 COLONSHARP: ':#' ;
 QUOTE: '\'' ;
 COLONQUOTE: ':\'' ;
