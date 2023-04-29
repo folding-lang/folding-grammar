@@ -404,7 +404,7 @@ OPID: IDLETTERSPECIAL+ ;
 fragment DIGITLETTER
     :   [0-9]  ;
 
-Integer: DIGITLETTER+ ;
+Integer: DIGITLETTER+ | '0x'HEX+ ;
 Double: DIGITLETTER+ '.' DIGITLETTER+ ;
 
 // string
