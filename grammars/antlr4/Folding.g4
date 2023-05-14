@@ -395,7 +395,7 @@ fragment IDLETTERSPECIAL
     :   [-<>$.~|+=*&%^@!?/\\:;,]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
-OPID: IDLETTERSPECIAL+ ;
+OPID: IDLETTERSPECIAL+ | (IDLETTERHEAD IDLETTERTAIL* '!') ;
 
 
 //// default data struct
