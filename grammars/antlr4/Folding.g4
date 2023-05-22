@@ -114,9 +114,9 @@ value
     | value DOUBLECOLON ID argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
     | value TRIPLECOLON value invoking? #invokeValueLikeMethod
-    | value QUOTE OPID #callAopFuncBack
-    | TILDE? OPID value #callAopFunc
-    | value OPID value #callOpFunc
+    | value QUOTE commonOpIdentifier #callAopFuncBack
+    | TILDE? commonOpIdentifier value #callAopFunc
+    | value commonOpIdentifier value #callOpFunc
     | value IS typeEx #typeCheck
     | value IF value #simpleIf
     | value QM value #takeNull
@@ -176,6 +176,10 @@ invoking
     ;
 
 //// identifier
+commonOpIdentifier
+    : OPID
+    | commonIdentifier EM
+    ;
 commonIdentifier
     : ID
     | opIdWrap
@@ -382,6 +386,7 @@ QUOTE: '\'' ;
 COLONQUOTE: ':\'' ;
 SHARP: '#' ;
 QM: '?' ;
+EM: '!' ;
 
 //// ID
 
@@ -395,7 +400,7 @@ fragment IDLETTERSPECIAL
     :   [-<>$.~|+=*&%^@!?/\\:;,]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
-OPID: IDLETTERSPECIAL+ | (IDLETTERHEAD IDLETTERTAIL* '!') ;
+OPID: IDLETTERSPECIAL+ ;
 
 
 //// default data struct
