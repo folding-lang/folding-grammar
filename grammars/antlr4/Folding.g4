@@ -101,6 +101,7 @@ boolean: TRUE | FALSE ;
 value
     : defaultValue #justDefaultValue
     | NULL #null
+    | THIS #this
     | (ARROW (ID|QM) | ARROWQM) #outputOfInversing
     | QUOTE reference #reflected
     | reference argValue? #callFunction
@@ -114,11 +115,19 @@ value
     | value DOUBLECOLON commonIdentifier argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
     | value TRIPLECOLON value invoking? #invokeValueLikeMethod
-    | value QUOTE commonOpIdentifier #callAopFuncBack
-    | TILDE? commonOpIdentifier value #callAopFunc
-    | value commonOpIdentifier value #callOpFunc
-    | value IS typeEx #typeCheck
-    | value IF value #simpleIf
+    | value (QUOTE commonOpIdentifier
+            |LPAREN commonOpIdentifier RPAREN
+            ) #callAopFuncBack
+    | TILDE commonOpIdentifier value #callAopFunc
+    | value (commonOpIdentifier value
+            |LPAREN commonOpIdentifier value RPAREN
+            ) #callOpFunc
+    | value (IS typeEx
+            |LPAREN IS typeEx RPAREN
+            ) #typeCheck
+    | value (IF value
+            |LPAREN IF value RPAREN
+            ) #simpleIf
     | if_else #ifExpression
     | patternMatch #patternMatchExpression
     | let_binding #letExpression
@@ -360,6 +369,7 @@ UNIT: 'Unit' ;
 NULL: 'null' ;
 TRUE: 'true' ;
 FALSE: 'false' ;
+THIS: 'this' ;
 
 //// Signs
 
@@ -396,7 +406,7 @@ fragment IDLETTERTAIL
     :   [-_a-zA-Z0-9]  ;
 
 fragment IDLETTERSPECIAL
-    :   [-<>$.~|+=*&%^@!?/\\:;,]  ;
+    :   [-<>$.|+=*&%^@!?/\\:;,]  ;
 
 ID: IDLETTERHEAD IDLETTERTAIL* ;
 OPID: IDLETTERSPECIAL+ ;
