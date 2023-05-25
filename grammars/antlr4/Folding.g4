@@ -108,10 +108,10 @@ value
     | SHARP reference #getFieldGlobal
     | NEW LBRACE (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #anonymousClassObject
     | value typeCasting #valueTypeCasting
-    | value COLONSHARP ID #getField
-    | value COLON ID argValue? #callMethod
-    | value COLONQUOTE ID #reflectedMethod
-    | value DOUBLECOLON ID argValue? #callFunctionLikeMethod
+    | value COLONSHARP commonIdentifier #getField
+    | value COLON commonIdentifier argValue? #callMethod
+    | value COLONQUOTE commonIdentifier #reflectedMethod
+    | value DOUBLECOLON commonIdentifier argValue? #callFunctionLikeMethod
     | value invoking #invokeValue
     | value TRIPLECOLON value invoking? #invokeValueLikeMethod
     | value QUOTE commonOpIdentifier #callAopFuncBack
@@ -119,7 +119,6 @@ value
     | value commonOpIdentifier value #callOpFunc
     | value IS typeEx #typeCheck
     | value IF value #simpleIf
-    | value QM value #takeNull
     | if_else #ifExpression
     | patternMatch #patternMatchExpression
     | let_binding #letExpression
