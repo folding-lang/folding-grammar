@@ -16,11 +16,11 @@ importEx
     ;
 importBody: LBRACE importCompo* RBRACE ;
 importCompo
-    : ID (SHARP importAlias)? (As importType)?
-    | CLASS ID (SHARP importAlias)?
-    | CLASS QUOTE ID QUOTE (SHARP importAlias)?
+    : commonIdentifier (SHARP importDefAlias)? (As importType)?
+    | CLASS commonClassIdentifier (SHARP importClassAlias)?
     ;
-importAlias: ID ;
+importDefAlias: commonIdentifier ;
+importClassAlias: commonClassIdentifier ;
 importType: typeEx;
 importPath: LPAREN FROM RawString RPAREN;
 importNest: SHARP ID;
@@ -53,9 +53,9 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? ABSTRACT? INTERFACE? CLASS ID (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* impl* RBRACE #justInterface
-    | annotationBlock? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
-    | annotationBlock? ABSTRACT? DATA? CLASS ID (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
+    : annotationBlock? ABSTRACT? INTERFACE? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* impl* RBRACE #justInterface
+    | annotationBlock? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
+    | annotationBlock? ABSTRACT? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_ // Deprecated
@@ -87,7 +87,7 @@ implBody
 typeParam
     : typeParamCompo+
     ;
-typeParamCompo: ID (TILDE typeEx)* ;
+typeParamCompo: commonClassIdentifier (TILDE typeEx)* ;
 
 
 //// define collect
@@ -196,6 +196,11 @@ commonIdentifier
 opIdWrap: LSQUARE OPID RSQUARE ;
 aopIdWrap: LSQUARE TILDE OPID RSQUARE ;
 
+commonClassIdentifier
+    : ID
+    | QUOTE ID QUOTE
+    ;
+
 
 
 //// definition
@@ -246,7 +251,7 @@ typeEx
     | typeExSingle QM?
     ;
 typeExSingle
-    : (package_ DOT)? (ID|QUOTE ID QUOTE) (LPAREN typeArgEx+ RPAREN)?
+    : (package_ DOT)? commonClassIdentifier (LPAREN typeArgEx+ RPAREN)?
     | primitiveType
     ;
 typeArgEx
