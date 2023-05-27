@@ -290,7 +290,7 @@ foreignPlatform: ID ;
 
 //// type alias
 typeAlias
-    : TYPEALIAS ID (LPAREN typeParam RPAREN)?
+    : TYPEALIAS commonClassIdentifier (LPAREN typeParam RPAREN)?
         ( ASSGIN typeEx
         | FOREIGN foreignBody? foreignTypeExpectitive?
         )
