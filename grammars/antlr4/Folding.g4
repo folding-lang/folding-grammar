@@ -100,7 +100,7 @@ defaultValue: Integer | Double | String | boolean ;
 boolean: TRUE | FALSE ;
 value
     : defaultValue #justDefaultValue
-    | NULL #null
+    | NULLKEYWORD #null
     | THIS #this
     | (ARROW (ID|QM) | ARROWQM) #outputOfInversing
     | QUOTE reference #reflected
@@ -376,7 +376,7 @@ BOOLEAN: 'Boolean' ;
 UNIT: 'Unit' ;
 
 // primitive value
-NULL: 'null' ;
+NULLKEYWORD: 'null' ;
 TRUE: 'true' ;
 FALSE: 'false' ;
 
