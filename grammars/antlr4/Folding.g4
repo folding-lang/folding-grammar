@@ -59,14 +59,14 @@ class_
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_ // Deprecated
-    : ID parameter? doBlock?
+    : ID (LPAREN parameter RPAREN)? doBlock?
     ;
 constructorSelf
-    : parameter? doBlock?
+    : (LPAREN parameter RPAREN)? doBlock?
     ;
 
 defInInterface
-    : annotationBlock? commonIdentifier typeParam? parameter? typeEx
+    : annotationBlock? commonIdentifier typeParam? (LPAREN parameter RPAREN)? typeEx
     ;
 fieldInInterface
     : (LPAREN ABSTRACT RPAREN) fieldNotInit
@@ -160,20 +160,16 @@ tupleEx
     : SHARP LPAREN value* RPAREN
     ;
 
-//// parameter
+//// (LPAREN parameter RPAREN)
 paramEx
-    : ID ELLIPSIS? TILDE typeEx
-    ;
-paramCEx
-    : specificAlias? value TILDE typeEx
+    : ID ELLIPSIS TILDE typeEx
+    | ID TILDE typeEx
+    | value (ARROW QM|ARROWQM) TILDE typeEx
+    | value ARROW ID TILDE typeEx
     ;
 parameter
-    : LPAREN paramEx+ parameterFromValue? RPAREN
+    : paramEx+
     ;
-parameterFromValue
-    : FROM paramCEx+
-    ;
-specificAlias: LPAREN ID ASSGIN RPAREN ;
 
 //// argument
 argEx
@@ -226,10 +222,10 @@ def
     ;
 
 justDef
-    : annotationBlock? commonIdentifier typeParam? parameter? typeEx ASSGIN value
+    : annotationBlock? commonIdentifier typeParam? (LPAREN parameter RPAREN)? typeEx ASSGIN value
     ;
 foreignDef
-    : annotationBlock? commonIdentifier typeParam? parameter? FOREIGN typeEx foreignBody?
+    : annotationBlock? commonIdentifier typeParam? (LPAREN parameter RPAREN)? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
     : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
@@ -241,13 +237,7 @@ inverseDefCompo
 
 //// lambda
 lambda
-    : LSQUARE parameterForLambda RSQUARE value
-    ;
-parameterForLambda
-    : paramEx* parameterFromValueForLambda?
-    ;
-parameterFromValueForLambda
-    : FROM paramCEx+
+    : LSQUARE parameter RSQUARE value
     ;
 
 //// typeEx
@@ -306,7 +296,7 @@ foreignTypeExpectitive
 
 //// annotation
 annotationDef
-    : ANNOTATION ID parameter
+    : ANNOTATION ID (LPAREN parameter RPAREN)
     ;
 annotation
     : (package_ DOT)? ID argValue?
