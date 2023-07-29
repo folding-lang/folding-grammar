@@ -237,7 +237,7 @@ inverseDefCompo
 
 //// lambda
 lambda
-    : LSQUARE parameter RSQUARE value
+    : LSQUARE parameter? RSQUARE value
     ;
 
 //// typeEx
