@@ -108,6 +108,7 @@ value
     | NEW reference argValue? #useForeignClass
     | SHARP reference #getFieldGlobal
     | NEW LBRACE (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #anonymousClassObject
+    | tupleEx #tuple
     | value typeCasting #valueTypeCasting
     | value COLONSHARP commonIdentifier #getField
     | value COLON commonIdentifier argValue? #callMethod
@@ -155,6 +156,10 @@ patternMatchCompo
     : patternValue=value (WHERE predicateValue=value)? ARROW outputValue=value
     ;
 
+tupleEx
+    : SHARP LPAREN value* RPAREN
+    ;
+
 //// parameter
 paramEx
     : ID ELLIPSIS? TILDE typeEx
@@ -176,8 +181,8 @@ argEx
     | (ID ELLIPSIS)? LBRACE value* RBRACE #multiArg
     ;
 argValue
-    : (ALPHA typeEx+)? LPAREN argEx* RPAREN #primaryArgValue
-    | (ALPHA typeEx+)? LBRACE value* RBRACE #singleListArgValue
+    : LPAREN (typeEx+ PIPE)? argEx* RPAREN #primaryArgValue
+    | LBRACE (typeEx+ PIPE)? value* RBRACE #singleListArgValue
     ;
 invoking
     : COLON LPAREN value* RPAREN
@@ -379,7 +384,7 @@ THIS: 'this' ;
 
 //// Signs
 
-ALPHA: '@' ;
+PIPE: '|' ;
 ASSGIN: '=' ;
 ELLIPSIS: '...' ;
 DOT: '.' ;
