@@ -81,6 +81,7 @@ impl
     ;
 implBody
     : LBRACE (COLONSHARP field)* (COLON def)* RBRACE
+    | (COLONSHARP field)* (COLON def)*
     ;
 
 //// type
@@ -107,7 +108,9 @@ value
     | reference argValue? #callFunction
     | NEW reference argValue? #useForeignClass
     | SHARP reference #getFieldGlobal
-    | NEW LBRACE (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #anonymousClassObject
+    | (NEW LBRACE (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE
+      |NEW (inherit|impl)
+      ) #anonymousClassObject
     | tupleEx #tuple
     | value typeCasting #valueTypeCasting
     | value COLONSHARP commonIdentifier #getField
