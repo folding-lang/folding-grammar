@@ -23,7 +23,10 @@ importDefAlias: commonIdentifier ;
 importClassAlias: commonClassIdentifier ;
 importType: typeEx;
 importPath: LPAREN FROM RawString RPAREN;
-importNest: SHARP ID;
+importNest
+    : SHARP ID
+    | EM
+    ;
 
 //// package
 package_
