@@ -234,11 +234,17 @@ foreignDef
     : annotationBlock? commonIdentifier typeParam? (LPAREN parameter RPAREN)? FOREIGN typeEx foreignBody?
     ;
 inverseDefining
-    : INVERSE ID? LPAREN inverseDefCompo+ RPAREN
+    : INVERSE ID? LPAREN inverseDefCompo+ RPAREN #simpleInverseDef
+    | INVERSE ID? LPAREN inverseDefGateCompo+ RPAREN value #rawInverseDef
     ;
 inverseDefCompo
     : value (TILDE typeEx)? #outputParam
     | As ID #necessaryParam
+    ;
+
+inverseDefGateCompo
+    : (ARROWQM|ARROW QM)
+    | As ID
     ;
 
 //// lambda
