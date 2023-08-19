@@ -58,7 +58,7 @@ fieldAssign
 class_
     : annotationBlock? ABSTRACT? INTERFACE? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* impl* RBRACE #justInterface
     | annotationBlock? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* inherit? impl* RBRACE #justClass
-    | annotationBlock? ABSTRACT? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
+    | annotationBlock? ABSTRACT? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP (field|fieldInInterface))* (COLON (defInInterface|def))* inherit? impl* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* inherit? impl* RBRACE #justMultiClass
     ;
 constructor_ // Deprecated
