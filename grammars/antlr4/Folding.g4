@@ -93,7 +93,7 @@ typeParam
 typeParamCompo: commonClassIdentifier (TILDE typeEx)* ;
 
 
-//// define collect
+//// definitions
 definition
     : def | class_
     ;
