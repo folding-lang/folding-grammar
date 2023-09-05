@@ -29,8 +29,12 @@ importNest
     ;
 
 //// package
+packagePiece
+    : ID
+    | LBRACE ID RBRACE
+    ;
 package_
-    : ID (DOT ID)*
+    : packagePiece (DOT packagePiece)*
     ;
 namespace
     : NAMESPACE package_
@@ -212,7 +216,7 @@ commonClassIdentifier
 //// definition
 field: fieldSetted|fieldNotInit|foreignField ;
 fieldNotInit: (LPAREN MUTABLE RPAREN)? ID typeEx ;
-fieldSetted: (LPAREN MUTABLE RPAREN)? ID typeEx? ASSGIN value ;
+fieldSetted: (LPAREN MUTABLE RPAREN)? ID typeEx ASSGIN value ;
 foreignField
     : LPAREN FOREIGN RPAREN ID typeEx
         (GET ASSGIN gettingValue=value)?
