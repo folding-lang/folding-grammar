@@ -60,9 +60,9 @@ fieldAssign
 
 //// class
 class_
-    : annotationBlock? ABSTRACT? INTERFACE? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* (IMPL impl)* RBRACE #justInterface
-    | annotationBlock? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* (INHERIT inherit)? (IMPL impl)* RBRACE #justClass
-    | annotationBlock? ABSTRACT? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP (field|fieldInInterface))* (COLON (defInInterface|def))* (INHERIT inherit)? (IMPL impl)* RBRACE #justAbstractClass
+    : annotationBlock? ABSTRACT? INTERFACE? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE (COLONSHARP fieldInInterface)* (COLON (defInInterface|def))* (impl)* RBRACE #justInterface
+    | annotationBlock? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf (COLONSHARP field)* (COLON def)* (INHERIT inherit)? (impl)* RBRACE #justClass
+    | annotationBlock? ABSTRACT? DATA? CLASS commonClassIdentifier (LPAREN typeParam RPAREN)? LBRACE constructorSelf? (COLONSHARP (field|fieldInInterface))* (COLON (defInInterface|def))* (inherit)? (impl)* RBRACE #justAbstractClass
 //    | annotationBlock? CLASS ID typeParam? LBRACE constructor_+ (COLONSHARP field)* (COLON (defInInterface|def))* (INHERIT inherit)? (IMPL impl)* RBRACE #justMultiClass
     ;
 constructor_ // Deprecated
@@ -81,13 +81,15 @@ fieldInInterface
 
 //// impl
 inherit
-    : typeEx (LBRACE argValue? implBody RBRACE)?
+    : INHERIT typeEx (LBRACE argValue? implBody? RBRACE|argValue? implBody?)
     ;
 impl
-    : typeEx (LBRACE implBody RBRACE)?
+    : IMPL typeEx (LBRACE implBody? RBRACE|implBody?)
     ;
 implBody
-    : (COLONSHARP field)* (COLON def)*
+    : (COLONSHARP field)+
+    | (COLON def)+
+    | (COLONSHARP field)+ (COLON def)+
     ;
 
 //// type
